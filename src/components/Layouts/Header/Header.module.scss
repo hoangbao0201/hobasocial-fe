@@ -1,0 +1,57 @@
+.wrapper {
+    width: 100%;
+    height: 60px;
+    background-color: var(--header-color);
+}
+
+.container {
+    max-width: 1200px;
+    padding: 0px 15px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 100%;
+    margin-right: auto;
+    margin-left: auto;
+    color: #ffff;
+}
+
+// Logo
+
+.logo {
+    color: #ffff;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+// Avatar
+
+.grid-avatar {
+    // border: 1px solid #ffff;
+}
+
+.image-avatar {
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    border-radius: 50%;
+    border: 1px solid transparent;
+    object-fit: cover;
+}
+
+// Dropdown item
+
+.dropdown {
+    display: flex;
+    flex-direction: column;
+}
+
+.dropdown-item {
+    padding: 10px 15px;
+    min-width: 100px;
+    color: var(--text-color);
+    cursor: pointer;
+}
+.dropdown-item:hover {
+    background-color: #eeee;
+}

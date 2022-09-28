@@ -1,0 +1,20 @@
+/* Scroll */
+
+.dev-scroll {
+    overflow-y: auto;
+}
+
+.dev-scroll::-webkit-scrollbar {
+    position: absolute;
+    width: 10px;
+}
+
+.dev-scroll::-webkit-scrollbar-track {
+    border-radius: 4px;
+    background-color: transparent;
+}
+
+.dev-scroll::-webkit-scrollbar-thumb {
+    border-radius: 4px;
+    background-color: #9ca7b0c8;
+}

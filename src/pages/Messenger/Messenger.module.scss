@@ -6,6 +6,8 @@
 
 .wrapper {
     display: flex;
+    max-width: 1400px;
+    margin: auto;
     height: calc(100vh - 60px);
 
     -webkit-user-select: none;
@@ -120,7 +122,12 @@
     .footer-input-sent {
         height: 50px;
         font-size: 16px;
-        padding: 0px 15px;
+        // padding: 0px 15px;
+                
+        padding-left: 15px;
+        padding-right: 60px;
+
+
         border: none;
         border: 1px solid transparent;
         outline: none;
@@ -197,5 +204,11 @@
     .container.checked {
         width: 100% !important;
         overflow: hidden;
+    }
+}
+
+@media (max-width: 600px) {
+    .messages-item {
+        max-width: 55% !important;
     }
 }

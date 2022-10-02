@@ -1,0 +1,97 @@
+.container {
+    top: 0;
+    left: 0;
+    z-index: -10;
+    width: 100%;
+    height: 100%;
+    outline: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+    position: fixed;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: linear-gradient(19deg, #21D4FD 0%, #B721FF 100%);
+}
+
+// Form
+
+.grid-form {
+    max-width: 400px;
+    width: 100%;
+    padding: 20px 0px;
+    background-color: #ffff;
+
+}
+
+.form-login {
+    padding: 0px 20px;
+    background-color: #ffff;
+    position: relative;
+}
+
+.form-logo {
+    margin: auto;
+    width: 100px;
+}
+
+// Form group
+
+.form-group {
+    display: flex;
+    align-items: center;
+
+    .form-group-input {
+        flex: 1;
+        height: var(--input-login-height);
+        border: 1px solid #ccc;
+    }
+}
+
+// Button
+
+.button-login {
+    color: #ffff !important;
+    background-color: #0190f3 !important;
+
+    &:hover {
+        background-color: #0184e0 !important;
+    }
+}
+
+.button-register {
+    margin: auto;
+}
+
+// Password
+
+.icon-action-password {
+    right: 24px;
+    padding: 7px 6px;
+    cursor: pointer;
+    margin-left: auto;
+    position: absolute;
+    border-radius: 50%;
+    -webkit-user-select: none;
+
+    svg {
+        width: 16px;
+        display: block;
+    }
+    &:hover {
+        background-color: #cccc;
+    }
+}
+
+// Animation
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}

@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 import DefaultLayout from "./components/DefaultLayout";
+import ErrorPage from "./pages/ErrorPage";
 import Messenger from "./pages/Messenger";
 import publicRouter from "./routes";
 
@@ -32,6 +33,7 @@ function App() {
                         ></Route>
                     );
                 })}
+                <Route path="*" element={<ErrorPage />}/>
             </Routes>
         </Router>
     );

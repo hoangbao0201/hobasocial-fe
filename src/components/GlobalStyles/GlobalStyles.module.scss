@@ -6,6 +6,9 @@
     // Header
     --header-color: #0091ff;
 
+    // Login
+    --input-login-height: 45px;
+
 
 }
 
@@ -17,10 +20,16 @@
 
 html {
     behavior: smooth;
+    background-color: #eeee;
 }
 
 a {
     text-decoration: none;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:focus {
+  transition: background-color 600000s 0s, color 600000s 0s;
 }
 
 // DEV CUSTOMIZE

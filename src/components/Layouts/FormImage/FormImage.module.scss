@@ -1,0 +1,66 @@
+.grid-image {
+    width: 150px;
+    height: 150px;
+    display: block;
+    margin: auto;
+    position: relative;
+    border-radius: 50%;
+    overflow: hidden;
+    box-shadow: 0px 0px 12px #ccc;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    
+}
+
+.avatar {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    cursor: pointer;
+}
+
+.grid-icon-hover {
+    z-index: 10;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+    position: absolute;
+    background-color: rgba(255, 255, 255, 0.4);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    .icon-camera {
+    
+        svg {
+            fill: #555;
+            width: 30px;
+            display: block;
+        }
+    }
+}
+
+.grid-icon-hover {
+    display: none;
+    animation: fadeIn 0.1s linear;
+}
+
+.grid-image:hover .grid-icon-hover {
+    display: flex !important;
+}
+
+
+// Animation
+
+@keyframes fadeIn {
+    0%{
+        opacity: 0;
+    }
+    100%{
+        opacity: 1;
+    }
+}

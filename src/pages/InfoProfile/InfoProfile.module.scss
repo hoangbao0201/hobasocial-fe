@@ -84,3 +84,18 @@
 .form-upload-avatar {
 
 }
+
+// Response
+
+@media (max-width: 800px) {
+    .grid-form-info {
+        flex-direction: column !important;
+        align-items: center;
+    }
+    .form-info-user {
+        width: 100% !important;
+    }
+    .form-upload-avatar {
+        width: 100% !important;
+    }
+}

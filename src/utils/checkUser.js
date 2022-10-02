@@ -17,8 +17,8 @@ function CheckUser({ children }) {
             return <>{children}</>
         }
         else {
-            // window.location = "/auth/login";
-            navigate("/auth/login");
+            window.location = "/auth/login";
+            // navigate("/auth/login");
         }
     }
 }

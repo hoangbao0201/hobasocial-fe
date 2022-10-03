@@ -40,11 +40,9 @@
 // Form group
 
 .form-group {
-    display: flex;
-    align-items: center;
 
     .form-group-input {
-        flex: 1;
+        width: 100%;
         height: var(--input-login-height);
         border: 1px solid #ccc;
     }
@@ -68,7 +66,8 @@
 // Password
 
 .icon-action-password {
-    right: 24px;
+    top: 8px;
+    right: 8px;
     padding: 7px 6px;
     cursor: pointer;
     margin-left: auto;

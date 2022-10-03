@@ -33,18 +33,37 @@
 .form-logo {
     margin: auto;
     width: 100px;
-}
+} 
 
 // Form group
 
 .form-group {
-    display: flex;
-    align-items: center;
 
     .form-group-input {
-        flex: 1;
-        height: var(--input-login-height);
+        width: 100%;
         border: 1px solid #ccc;
+        height: var(--input-login-height);
+    }
+}
+
+// Password
+
+.icon-action-password {
+    top: 8px;
+    right: 8px;
+    padding: 7px 6px;
+    cursor: pointer;
+    margin-left: auto;
+    position: absolute;
+    border-radius: 50%;
+    -webkit-user-select: none;
+
+    svg {
+        width: 16px;
+        display: block;
+    }
+    &:hover {
+        background-color: #cccc;
     }
 }
 
@@ -61,26 +80,6 @@
 
 .button-login {
     margin: auto;
-}
-
-// Password
-
-.icon-action-password {
-    right: 24px;
-    padding: 7px 6px;
-    cursor: pointer;
-    margin-left: auto;
-    position: absolute;
-    border-radius: 50%;
-    -webkit-user-select: none;
-
-    svg {
-        width: 16px;
-        display: block;
-    }
-    &:hover {
-        background-color: #cccc;
-    }
 }
 
 // Animation

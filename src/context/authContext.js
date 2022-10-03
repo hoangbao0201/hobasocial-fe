@@ -114,6 +114,24 @@ function AuthContextProvider({ children }) {
         }
     };
 
+    const updateUser = async (data) => {
+        try {
+            const response = await axios.patch("/api/update-user");
+
+            return response.data;
+        } catch (error) {
+            if(error.response.data) {
+                return error.response.data
+            }
+            else {
+                return {
+                    success: false,
+                    msg: error.msg
+                }
+            }
+        }
+    }
+
     const logoutUser = async () => {
         localStorage.removeItem("TokenUser");
         dispatch({
@@ -130,6 +148,7 @@ function AuthContextProvider({ children }) {
         autoFetch,
         loginUser,
         registerUser,
+        updateUser,
         logoutUser
     };
     return (

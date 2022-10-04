@@ -30,10 +30,14 @@
     position: relative;
 }
 
-.form-logo {
-    margin: auto;
-    width: 100px;
-} 
+
+
+.form-group-logo {
+    text-align: center;
+    .form-logo {
+        max-width: 100px;
+    } 
+}
 
 // Form group
 

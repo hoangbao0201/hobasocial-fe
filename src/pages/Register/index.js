@@ -5,79 +5,14 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import { useContext, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { iconHideEye, iconShowEye } from "~/.public/icon";
 import Header from "~/components/Layouts/Header";
 import { AuthContext } from "~/context/authContext";
 import Spinner from "~/components/Layouts/Spinner";
+import { checkDataRegister } from "~/utils/checkValueInput";
 
 const cx = classNames.bind(styles);
-
-const checkData = (data) => {
-    if (!data.name || !data.username || !data.password) {
-        return {
-            success: false,
-            warningField: ["name", "username", "password"],
-            msg: "Bạn chưa điền đầy đủ thông tin",
-        };
-    }
-    // Check name
-    if (data.name.length < 3) {
-        return {
-            success: false,
-            warningField: ["name"],
-            msg: "Tên quá ngắn",
-        };
-    }
-    if (data.name.length > 20) {
-        return {
-            success: false,
-            warningField: ["name"],
-            msg: "Tên quá dài",
-        };
-    }
-    // Check username
-    if (data.username.length < 3) {
-        return {
-            success: false,
-            warningField: ["username"],
-            msg: "Tài khoản quá ngắn",
-        };
-    }
-    if (data.username.length > 20) {
-        return {
-            success: false,
-            warningField: ["username"],
-            msg: "Tài khoản quá dài",
-        };
-    }
-    // Check password
-    if (data.password.length < 3) {
-        return {
-            success: false,
-            warningField: ["password"],
-            msg: "Mật khẩu quá ngắn",
-        };
-    }
-    if (data.password.length > 20) {
-        return {
-            success: false,
-            warningField: ["password"],
-            msg: "Mật khẩu quá dài",
-        };
-    }
-    if (data.password !== data.rePassword) {
-        return {
-            success: false,
-            warningField: ["password", "rePassword"],
-            msg: "Mật khẩu không giống nhau",
-        };
-    }
-
-    return {
-        success: true,
-    };
-};
 
 const showToastify = (data) => {
     return toast.warn(`${data}!`, {
@@ -92,8 +27,8 @@ const showToastify = (data) => {
 };
 
 function Register() {
+    const { state: { authLoading, isAuthenticated }, registerUser } = useContext(AuthContext);
     const navigate = useNavigate();
-    const { registerUser } = useContext(AuthContext);
 
     const [warning, setWarning] = useState(null);
     const [loading, setLoading] = useState(false);
@@ -120,7 +55,7 @@ function Register() {
     const eventSubmitForm = async (e) => {
         e.preventDefault();
         // Check Data
-        const dataValid = checkData(dataValueForm);
+        const dataValid = checkDataRegister(dataValueForm);
         if (!dataValid.success) {
             showToastify(dataValid.msg);
             setWarning(dataValid);
@@ -134,15 +69,29 @@ function Register() {
         // ---
 
         const dataServer = await registerUser(dataValueForm);
-        console.log(dataServer);
-
-        if (dataServer.success) {
-            navigate("/auth/login");
+        if(dataServer.success) {
+            navigate("/auth/login", { state: { success: true } });
+        }
+        else {
+            setWarning({
+                success: false,
+                warningField: ["username"],
+                msg: dataServer.msg,
+            })
         }
 
         // ---
         setLoading(false);
     };
+
+    if(authLoading) {
+        return ;
+    }
+    else {
+        if(isAuthenticated) {
+            return <Navigate to="/"/>
+        }
+    }
 
     return (
         <div className={cx("wrapper")}>
@@ -152,12 +101,14 @@ function Register() {
             <div className={cx("container")}>
                 <div className={cx("grid-form")}>
                     <form className={cx("form-register")}>
-                        <div className={cx("dev-form-group", "form-group")}>
+                        {/* Logo */}
+                        <div className={cx("dev-form-group", "form-group", "form-group-logo")}>
                             <img
                                 className={cx("form-logo")}
                                 src="/images/logo.png"
                             />
                         </div>
+                        {/* name */}
                         <div className={cx("dev-form-group", "form-group")}>
                             <input
                                 className={cx(
@@ -182,6 +133,7 @@ function Register() {
                             />
                             <div className={cx("dev-form-alert-warning")}>{!!warning && warning.warningField.includes("name") && warning.msg}</div>
                         </div>
+                        {/* username */}
                         <div className={cx("dev-form-group", "form-group")}>
                             <input
                                 className={cx(
@@ -207,6 +159,7 @@ function Register() {
                             />
                             <div className={cx("dev-form-alert-warning")}>{!!warning && warning.warningField.includes("username") && warning.msg}</div>
                         </div>
+                        {/* password */}
                         <div className={cx("dev-form-group", "form-group")}>
                             <input
                                 className={cx(
@@ -241,6 +194,7 @@ function Register() {
                                 </i>
                             )}
                         </div>
+                        {/* rePassword */}
                         <div className={cx("dev-form-group", "form-group")}>
                             <input
                                 className={cx(
@@ -265,6 +219,7 @@ function Register() {
                             />
                             <div className={cx("dev-form-alert-warning")}>{!!warning && warning.warningField.includes("rePassword") && warning.msg}</div>
                         </div>
+                        {/* button register */}
                         <div className={cx("dev-form-group", "form-group")}>
                             <button
                                 className={cx(
@@ -277,6 +232,7 @@ function Register() {
                             </button>
                         </div>
                         <div className={cx("dev-devider")} />
+                        {/* next page login */}
                         <Link
                             to="/auth/login"
                             className={cx("dev-button-lg", "button-login")}

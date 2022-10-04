@@ -5,57 +5,14 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import { useContext, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { iconHideEye, iconShowEye } from "~/.public/icon";
 import Spinner from "~/components/Layouts/Spinner";
 import Header from "~/components/Layouts/Header";
 import { AuthContext } from "~/context/authContext";
+import { checkDataLogin } from "~/utils/checkValueInput";
 
 const cx = classNames.bind(styles);
-
-const checkData = (data) => {
-    if (!data.username || !data.password) {
-        return {
-            success: false,
-            warningField: ["username", "password"],
-            msg: "Bạn chưa điền đầy đủ thông tin",
-        };
-    }
-    // Check username
-    if (data.username.length < 3) {
-        return {
-            success: false,
-            warningField: ["username"],
-            msg: "Tài khoản quá ngắn",
-        };
-    }
-    if (data.username.length > 20) {
-        return {
-            success: false,
-            warningField: ["username"],
-            msg: "Tài khoản quá dài",
-        };
-    }
-    // Check password
-    if (data.password.length < 3) {
-        return {
-            success: false,
-            warningField: ["password"],
-            msg: "Mật khẩu quá ngắn",
-        };
-    }
-    if (data.password.length > 20) {
-        return {
-            success: false,
-            warningField: ["password"],
-            msg: "Mật khẩu quá dài",
-        };
-    }
-
-    return {
-        success: true,
-    };
-};
 
 const showToastify = (data) => {
     return toast.warn(`${data}!`, {
@@ -70,7 +27,7 @@ const showToastify = (data) => {
 };
 
 function Login() {
-    const { loginUser } = useContext(AuthContext);
+    const {state: { authLoading, isAuthenticated }, loginUser } = useContext(AuthContext);
 
     const [warning, setWarning] = useState(null);
     const [loading, setLoading] = useState(false);
@@ -94,7 +51,7 @@ function Login() {
 
     const eventSubmitForm = async (e) => {
         e.preventDefault();
-        const dataValid = checkData(dataValueForm);
+        const dataValid = checkDataLogin(dataValueForm);
         if (!dataValid.success) {
             showToastify(dataValid.msg);
             setWarning(dataValid);
@@ -107,11 +64,19 @@ function Login() {
         // ---
 
         const dataServer = await loginUser(dataValueForm);
-        console.log(dataServer);
 
         // ---
         setLoading(false);
     };
+
+    if(authLoading) {
+        return ;
+    }
+    else {
+        if(isAuthenticated) {
+            return <Navigate to="/"/>
+        }
+    }
 
     return (
         <div className={cx("wrapper")}>
@@ -121,12 +86,14 @@ function Login() {
             <div className={cx("container")}>
                 <div className={cx("grid-form")}>
                     <form className={cx("form-login")}>
-                        <div className={cx("dev-form-group", "form-group")}>
+                        {/* Logo */}
+                        <div className={cx("dev-form-group", "form-group", "form-group-logo")}>
                             <img
                                 className={cx("form-logo")}
                                 src="/images/logo.png"
                             />
                         </div>
+                        {/* name */}
                         <div className={cx("dev-form-group", "form-group")}>
                             <input
                                 className={cx(
@@ -155,6 +122,7 @@ function Login() {
                                     warning.msg}
                             </div>
                         </div>
+                        {/* password */}
                         <div className={cx("dev-form-group", "form-group")}>
                             <input
                                 className={cx(
@@ -193,6 +161,7 @@ function Login() {
                                 </i>
                             )}
                         </div>
+                        {/* button login */}
                         <div className={cx("dev-form-group", "form-group")}>
                             <button
                                 className={cx(
@@ -205,6 +174,7 @@ function Login() {
                             </button>
                         </div>
                         <div className={cx("dev-devider")} />
+                        {/* next page home */}
                         <Link
                             to="/auth/register"
                             className={cx("dev-button-lg", "button-register")}

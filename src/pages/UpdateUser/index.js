@@ -4,79 +4,19 @@ import styles from "./UpdateUser.module.scss";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { iconHideEye, iconShowEye } from "~/.public/icon";
 import Footer from "~/components/Layouts/Footer";
 import Header from "~/components/Layouts/Header";
 import FormImage from "~/components/Layouts/FormImage";
 import { AuthContext } from "~/context/authContext";
 import Spinner from "~/components/Layouts/Spinner";
+import { checkDataUpdateUser } from "~/utils/checkValueInput";
 
 const cx = classNames.bind(styles);
 
-const checkData = (data) => {
-    if (!data.name && !data.username && !data.password) {
-        return {
-            success: false,
-            msg: "Bạn chưa sữa đỗi thông tin nào",
-        };
-    }
-    // Check name
-    if (data.name.length < 3) {
-        return {
-            success: false,
-            warningField: ["name"],
-            msg: "Tên quá ngắn",
-        };
-    }
-    if (data.name.length > 20) {
-        return {
-            success: false,
-            warningField: ["name"],
-            msg: "Tên quá dài",
-        };
-    }
-    // Check username
-    if (data.username.length < 3) {
-        return {
-            success: false,
-            warningField: ["username"],
-            msg: "Tài khoản quá ngắn",
-        };
-    }
-    if (data.username.length > 20) {
-        return {
-            success: false,
-            warningField: ["username"],
-            msg: "Tài khoản quá dài",
-        };
-    }
-    // Check password
-    if (data.newPassword.length < 3) {
-        return {
-            success: false,
-            warningField: ["newPassword"],
-            msg: "Mật khẩu mới quá ngắn",
-        };
-    }
-    if (data.newPassword.length > 20) {
-        return {
-            success: false,
-            warningField: ["newPassword"],
-            msg: "Mật khẩu mới quá dài",
-        };
-    }
-    if (data.newPassword !== data.reNewPassword) {
-        return {
-            success: false,
-            warningField: ["newPassword", "reNewPassword"],
-            msg: "Mật khẩu mới không giống nhau",
-        };
-    }
-};
-
 const showToastify = (data) => {
-    return toast.warn(`${data}!`, {
+    return toast.success(`${data}!`, {
         position: "top-right",
         autoClose: 4000,
         hideProgressBar: false,
@@ -117,9 +57,8 @@ function UpdateUser() {
         e.preventDefault();
 
         // Check Data
-        const dataValid = checkData(dataValueForm);
+        const dataValid = checkDataUpdateUser(dataValueForm);
         if (!dataValid.success) {
-            showToastify(dataValid.msg);
             setWarning(dataValid);
             setTimeout(() => {
                 setWarning(null);
@@ -137,7 +76,22 @@ function UpdateUser() {
             newPassword: dataValueForm.newPassword,
         });
 
-        console.log(dataServer);
+        if (dataServer.success) {
+            showToastify("Update thông tin thành công");
+            setInterval(() => {
+                window.location.reload();
+            }, 5000)
+            
+        }
+        if (!dataServer.success && !!dataServer.warningField) {
+            setWarning({
+                warningField: dataServer.warningField,
+                msg: dataServer.msg,
+            });
+            setTimeout(() => {
+                setWarning(null);
+            }, 5000);
+        }
 
         // ---
         setLoading(false);
@@ -165,6 +119,7 @@ function UpdateUser() {
                             className={cx("form-info-user", "dev-col-8")}
                             autoComplete="off"
                         >
+                            {/* name */}
                             <div className={cx("dev-form-group", "form-group")}>
                                 <label
                                     htmlFor="idName"
@@ -179,7 +134,9 @@ function UpdateUser() {
                                         "form-group-input",
                                         `${
                                             !!warning
-                                                ? warning.warningField.includes("name")
+                                                ? warning.warningField.includes(
+                                                      "name"
+                                                  )
                                                     ? "dev-input-warning"
                                                     : ""
                                                 : ""
@@ -192,8 +149,13 @@ function UpdateUser() {
                                     onFocus={eventFocusInput}
                                     autoComplete="off"
                                 />
-                                <div className={cx("dev-form-alert-warning")}>{!!warning && warning.warningField.includes("name") && warning.msg}</div>
+                                <div className={cx("dev-form-alert-warning")}>
+                                    {!!warning &&
+                                        warning.warningField.includes("name") &&
+                                        warning.msg}
+                                </div>
                             </div>
+                            {/* username */}
                             <div className={cx("dev-form-group", "form-group")}>
                                 <label
                                     htmlFor="idUsername"
@@ -209,7 +171,9 @@ function UpdateUser() {
                                         "form-group-input",
                                         `${
                                             !!warning
-                                                ? warning.warningField.includes("username")
+                                                ? warning.warningField.includes(
+                                                      "username"
+                                                  )
                                                     ? "dev-input-warning"
                                                     : ""
                                                 : ""
@@ -222,8 +186,15 @@ function UpdateUser() {
                                     onFocus={eventFocusInput}
                                     autoComplete="off"
                                 />
-                                <div className={cx("dev-form-alert-warning")}>{!!warning && warning.warningField.includes("username") && warning.msg}</div>
+                                <div className={cx("dev-form-alert-warning")}>
+                                    {!!warning &&
+                                        warning.warningField.includes(
+                                            "username"
+                                        ) &&
+                                        warning.msg}
+                                </div>
                             </div>
+                            {/* oldPassword */}
                             <div className={cx("dev-form-group", "form-group")}>
                                 <label
                                     htmlFor="idOldPassword"
@@ -254,8 +225,15 @@ function UpdateUser() {
                                     onFocus={eventFocusInput}
                                     autoComplete="off"
                                 />
-                                <div className={cx("dev-form-alert-warning")}>{!!warning && warning.warningField.includes("password") && warning.msg}</div>
+                                <div className={cx("dev-form-alert-warning")}>
+                                    {!!warning &&
+                                        warning.warningField.includes(
+                                            "oldPassword"
+                                        ) &&
+                                        warning.msg}
+                                </div>
                             </div>
+                            {/* newPassword */}
                             <div className={cx("dev-form-group", "form-group")}>
                                 <label
                                     htmlFor="idNewPassword"
@@ -288,7 +266,13 @@ function UpdateUser() {
                                     onFocus={eventFocusInput}
                                     autoComplete="off"
                                 />
-                                <div className={cx("dev-form-alert-warning")}>{!!warning && warning.warningField.includes("newPassword") && warning.msg}</div>
+                                <div className={cx("dev-form-alert-warning")}>
+                                    {!!warning &&
+                                        warning.warningField.includes(
+                                            "newPassword"
+                                        ) &&
+                                        warning.msg}
+                                </div>
                                 {!!dataValueForm.password && (
                                     <i
                                         className={cx("icon-action-password")}
@@ -302,6 +286,7 @@ function UpdateUser() {
                                     </i>
                                 )}
                             </div>
+                            {/* reNewPassword */}
                             <div className={cx("dev-form-group", "form-group")}>
                                 <label
                                     htmlFor="idReNewPassword"
@@ -334,8 +319,15 @@ function UpdateUser() {
                                     onFocus={eventFocusInput}
                                     autoComplete="off"
                                 />
-                                <div className={cx("dev-form-alert-warning")}>{!!warning && warning.warningField.includes("reNewPassword") && warning.msg}</div>
+                                <div className={cx("dev-form-alert-warning")}>
+                                    {!!warning &&
+                                        warning.warningField.includes(
+                                            "reNewPassword"
+                                        ) &&
+                                        warning.msg}
+                                </div>
                             </div>
+                            {/* button update */}
                             <div
                                 className={cx(
                                     "dev-form-group",

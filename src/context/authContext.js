@@ -116,7 +116,7 @@ function AuthContextProvider({ children }) {
 
     const updateUser = async (data) => {
         try {
-            const response = await axios.patch("/api/update-user");
+            const response = await axios.patch(`${apiUrl}/api/auth/update-user`, data);
 
             return response.data;
         } catch (error) {

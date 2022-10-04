@@ -70,7 +70,7 @@ function Register() {
 
         const dataServer = await registerUser(dataValueForm);
         if(dataServer.success) {
-            navigate("/auth/login", { state: { success: true } });
+            navigate("/auth/login");
         }
         else {
             setWarning({

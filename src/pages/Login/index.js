@@ -64,6 +64,13 @@ function Login() {
         // ---
 
         const dataServer = await loginUser(dataValueForm);
+        if(!dataServer.success) {
+            setWarning({
+                success: false,
+                warningField: ["username"],
+                msg: dataServer.msg,
+            })
+        }
 
         // ---
         setLoading(false);
@@ -77,6 +84,8 @@ function Login() {
             return <Navigate to="/"/>
         }
     }
+
+    
 
     return (
         <div className={cx("wrapper")}>

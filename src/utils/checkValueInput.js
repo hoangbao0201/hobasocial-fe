@@ -87,13 +87,21 @@ export const checkDataRegister = (data) => {
 };
 
 export const checkDataLogin = (data) => {
-    if (!data.username || !data.password) {
+    const arrayListWarning = [];
+    if (!data.username) {
+        arrayListWarning.push("username");
+    }
+    if (!data.password) {
+        arrayListWarning.push("password");
+    }
+    if (arrayListWarning.length > 0) {
         return {
             success: false,
-            warningField: ["username", "password"],
-            msg: "Bạn chưa điền đầy đủ thông tin",
+            warningField: arrayListWarning,
+            msg: "Bạn chưa điền thông tin",
         };
     }
+
     // Check username
     if (data.username.length < 3) {
         return {
@@ -147,12 +155,12 @@ export const checkDataUpdateUser = (data) => {
     if (!data.reNewPassword) {
         arrayListWarning.push("reNewPassword");
     }
-    if(arrayListWarning.length>0) {
+    if (arrayListWarning.length > 0) {
         return {
             success: false,
             warningField: arrayListWarning,
-            msg: "Bạn chưa điền thông tin"
-        }
+            msg: "Bạn chưa điền thông tin",
+        };
     }
     // Check name
     if (data.name.length < 3) {
@@ -210,5 +218,5 @@ export const checkDataUpdateUser = (data) => {
     return {
         success: true,
         warningField: [],
-    }
+    };
 };

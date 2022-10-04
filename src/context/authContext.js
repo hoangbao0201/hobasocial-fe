@@ -116,21 +116,57 @@ function AuthContextProvider({ children }) {
 
     const updateUser = async (data) => {
         try {
-            const response = await axios.patch(`${apiUrl}/api/auth/update-user`, data);
+            const response = await axios.patch(
+                `${apiUrl}/api/auth/update-user`,
+                data
+            );
 
             return response.data;
         } catch (error) {
-            if(error.response.data) {
-                return error.response.data
-            }
-            else {
+            if (error.response.data) {
+                return error.response.data;
+            } else {
                 return {
                     success: false,
-                    msg: error.msg
-                }
+                    msg: error.msg,
+                };
             }
         }
-    }
+    };
+
+    const getAllUser = async () => {
+        try {
+            const response = await axios.get(`${apiUrl}/api/auth/all-user`);
+
+            return response.data;
+        } catch (error) {
+            if (error.response.data) {
+                return error.response.data;
+            } else {
+                return {
+                    success: false,
+                    msg: error.msg,
+                };
+            }
+        }
+    };
+
+    const searchUser = async (data) => {
+        try {
+            const response = await axios.get(`${apiUrl}/api/auth/search-user/text=${data}`);
+
+            return response.data;
+        } catch (error) {
+            if (error.response.data) {
+                return error.response.data;
+            } else {
+                return {
+                    success: false,
+                    msg: error.msg,
+                };
+            }
+        }
+    };
 
     const logoutUser = async () => {
         localStorage.removeItem("TokenUser");
@@ -138,10 +174,10 @@ function AuthContextProvider({ children }) {
             type: "AUTH_LOADED_SUCCESS",
             payload: {
                 isAuthenticated: false,
-                user: null
-            }
-        })
-    }
+                user: null,
+            },
+        });
+    };
 
     const dataAuthContext = {
         state,
@@ -149,7 +185,9 @@ function AuthContextProvider({ children }) {
         loginUser,
         registerUser,
         updateUser,
-        logoutUser
+        getAllUser,
+        logoutUser,
+        searchUser,
     };
     return (
         <AuthContext.Provider value={dataAuthContext}>

@@ -2,11 +2,17 @@ import classNames from "classnames/bind";
 import styles from "./Sidebar.module.scss";
 
 import { iconDeleteInput, iconSearch, iconSolidMore } from "~/.public/icon";
-import { useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 
 import Tippy from "@tippyjs/react";
 import "tippy.js/dist/tippy.css";
 import "tippy.js/themes/light.css";
+
+import { io } from "socket.io-client";
+import { apiUrl } from "~/context/constant";
+import { AuthContext } from "~/context/authContext";
+import useDebounce from "~/hooks/useDebounce";
+import SuggestSearch from "../SuggestSearch";
 
 const cx = classNames.bind(styles);
 
@@ -55,7 +61,6 @@ const ItemMessage = ({ data, active, action }) => {
                     theme="light"
                     appendTo="parent"
                     interactive="true"
-
                     content={
                         <div className={cx("dropdown")}>
                             <div className={cx("action-more-menu-item")}>
@@ -64,7 +69,12 @@ const ItemMessage = ({ data, active, action }) => {
                             <div className={cx("action-more-menu-item")}>
                                 Ghim
                             </div>
-                            <div className={cx("action-more-menu-item", "menu-item-delete")}>
+                            <div
+                                className={cx(
+                                    "action-more-menu-item",
+                                    "menu-item-delete"
+                                )}
+                            >
                                 Xóa hội thoại
                             </div>
                         </div>
@@ -84,7 +94,8 @@ const ItemMessage = ({ data, active, action }) => {
     );
 };
 
-const dataListItemMsg = [
+// Initial value
+const listItemMsg = [
     {
         name: "Nguyễn Hoàng Bảo",
         description: "Hôm qua mày có đi học không Hôm qua mày có đi học không",
@@ -150,51 +161,68 @@ const dataListItemMsg = [
         description: "Hôm qua mày có đi học không Hôm qua mày có đi học không",
     },
 ];
+const allUser = [];
+
+const socket = io.connect(apiUrl);
 
 function Sidebar({ active, action }) {
-    const [valueInput, setValueInput] = useState("");
-    const [dataActiveItem, setDataActiveItem] = useState(null);
+    // usecontext
+    const { searchUser } = useContext(AuthContext);
 
+    const [focusInputSearch, setFocusInputSearch] = useState(false);
+    const [resultListUserSearch, setResultListUserSearch] = useState([]);
+    const [valueInputSearch, setValueInputSearch] = useState("");
     const inputRef = useRef();
+
+    const textDebounce = useDebounce(valueInputSearch, 500);
+
+    useEffect(() => {
+        if (textDebounce === "") {
+            setResultListUserSearch([]);
+        } else if (textDebounce) {
+            eventSearchUser(textDebounce);
+        }
+    }, [textDebounce]);
+
+    // Search user
+    const eventSearchUser = async (data) => {
+        const dataServer = await searchUser(data);
+        if (dataServer.success) {
+            setResultListUserSearch(dataServer.resultSearch);
+        }
+    };
+
+    // Handle focus input
     const eventFocusInput = () => {
         inputRef.current.focus();
     };
 
+    // Delete value input
     const eventDeleteInput = () => {
-        setValueInput("");
+        setValueInputSearch("");
         inputRef.current.focus();
     };
 
+    // Onchange value search
+    const eventOnchangeValueSearch = async (e) => {
+        setValueInputSearch(e.target.value);
+    };
+
+    // Active item message
     const eventActiveItemMessage = (data) => {
         action(data);
     };
 
-    return (
-        <div className={cx("wrapper", `${!!active ? "checked" : "" }`)}>
-            <div className={cx("side-search")}>
-                <i className={cx("icon-search")} onClick={eventFocusInput}>
-                    {iconSearch}
-                </i>
-                <input
-                    className={cx("input-search")}
-                    placeholder="Tìm kiếm"
-                    ref={inputRef}
-                    value={valueInput}
-                    onChange={(e) => setValueInput(e.target.value)}
-                />
+    // Send message
+    const eventSendMessage = () => {
+        socket.emit("join_room", 123);
+    };
 
-                {!!valueInput && (
-                    <i
-                        className={cx("icon-delete-input")}
-                        onClick={eventDeleteInput}
-                    >
-                        {iconDeleteInput}
-                    </i>
-                )}
-            </div>
-
-            <div id="myDIV" className={cx("list-user-message")}>
-                {dataListItemMsg.map((item, index) => {
+    let contentSidebar;
+    if (!focusInputSearch) {
+        contentSidebar = (
+            <>
+                {listItemMsg.map((item, index) => {
                     return (
                         <ItemMessage
                             key={index}
@@ -204,6 +232,58 @@ function Sidebar({ active, action }) {
                         />
                     );
                 })}
+            </>
+        );
+    } else {
+        contentSidebar = (
+            <>
+                {!!valueInputSearch && (
+                    <div className={cx("list-user-search", "dev-scroll")}>
+                        {resultListUserSearch.map((user, index) => {
+                            return <SuggestSearch key={index} data={user} />;
+                        })}
+                    </div>
+                )}
+            </>
+        );
+    }
+
+    return (
+        <div className={cx("wrapper", `${!!active ? "checked" : ""}`)}>
+            <div className={cx("side-search")}>
+                <div className={cx("grid-input-search")}>
+                    <i className={cx("icon-search")} onClick={eventFocusInput}>
+                        {iconSearch}
+                    </i>
+                    <input
+                        className={cx("input-search")}
+                        placeholder="Tìm kiếm"
+                        ref={inputRef}
+                        value={valueInputSearch}
+                        onChange={eventOnchangeValueSearch}
+                        onFocus={() => setFocusInputSearch(true)}
+                    />
+                    {!!valueInputSearch && (
+                        <i
+                            className={cx("icon-delete-input")}
+                            onClick={eventDeleteInput}
+                        >
+                            {iconDeleteInput}
+                        </i>
+                    )}
+                </div>
+                {focusInputSearch && (
+                    <span
+                        className={cx("close-suggest-sidebar")}
+                        onClick={() => setFocusInputSearch(false)}
+                    >
+                        Đóng
+                    </span>
+                )}
+            </div>
+
+            <div id="myDIV" className={cx("list-user-message")}>
+                {contentSidebar}
             </div>
         </div>
     );

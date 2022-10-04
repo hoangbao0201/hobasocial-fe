@@ -1,0 +1,27 @@
+.list-item {
+    width: 100%;
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    transition: 0.01s;
+    opacity: 0.2;
+
+    &:hover {
+        background-color: #eeee;
+    }
+}
+
+.image {
+    width: 36px;
+    height: 36px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.name {
+    margin-left: 10px;
+    font-size: 17px;
+    color: #333;
+    line-height: 1;
+}

@@ -4,7 +4,7 @@ import styles from "./UpdateUser.module.scss";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { iconHideEye, iconShowEye } from "~/.public/icon";
 import Footer from "~/components/Layouts/Footer";
 import Header from "~/components/Layouts/Header";
@@ -28,7 +28,9 @@ const showToastify = (data) => {
 };
 
 function UpdateUser() {
-    const { updateUser } = useContext(AuthContext);
+    const {
+        updateUser,
+    } = useContext(AuthContext);
 
     const [warning, setWarning] = useState(null);
     const [loading, setLoading] = useState(false);
@@ -80,8 +82,7 @@ function UpdateUser() {
             showToastify("Update thông tin thành công");
             setInterval(() => {
                 window.location.reload();
-            }, 5000)
-            
+            }, 5000);
         }
         if (!dataServer.success && !!dataServer.warningField) {
             setWarning({

@@ -2,9 +2,10 @@ import classNames from "classnames/bind";
 import styles from "./Messenger.module.scss";
 
 import Sidebar from "~/components/Layouts/Sidebar";
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { iconArrowLeft } from "~/.public/icon";
 import Header from "~/components/Layouts/Header";
+import { AuthContext } from "~/context/authContext";
 
 const cx = classNames.bind(styles);
 
@@ -65,14 +66,18 @@ const dataListMessages = {
 };
 
 function Messenger() {
+    const {
+        state: { authLoading, isAuthenticated, user },
+        getAllUser,
+    } = useContext(AuthContext);
     const inputRef = useRef();
     const scrollRef = useRef();
 
     const userId = "123";
     const [dataContentMessage, setDataContentMessage] = useState(null);
     const [valueInputSendMsg, setValueInputSendMsg] = useState("");
-    // const [arrayInputListMessage, setArrayInputListMessage] = useState([]);
 
+    // Send message
     const eventSendMsg = () => {
         dataListMessages.content.push({
             text: valueInputSendMsg,
@@ -83,6 +88,7 @@ function Messenger() {
         inputRef.current.focus();
     };
 
+    // Onchange input
     const eventOnchangeInput = (e) => {
         setValueInputSendMsg(e.target.value);
     };
@@ -93,24 +99,21 @@ function Messenger() {
 
     useEffect(() => {
         // scrollRef.current?.scrollIntoView({ behavior: "smooth" });
-        // console.log(123)
     }, [dataListMessages.content]);
 
     return (
         <>
             <Header />
             <div className={cx("wrapper")}>
-                {/* {!!dataContentMessage || ( */}
-
                 <Sidebar
                     active={dataContentMessage}
                     action={setDataContentMessage}
                 />
-                {/* )} */}
+
                 <div
                     className={cx(
                         "container",
-                        `${!!dataContentMessage ? "checked" : ""}`
+                        `${!!dataContentMessage ? "checked" : ""}`,
                     )}
                 >
                     {!!dataContentMessage ? (

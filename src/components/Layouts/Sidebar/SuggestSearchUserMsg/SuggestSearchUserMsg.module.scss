@@ -12,7 +12,7 @@
     transition: 0.01s;
 
     &:hover {
-        background-color: #eeee;
+        background-color: #eeeff2;
     }
 }
 
@@ -27,7 +27,15 @@
     margin-left: 10px;
     font-size: 17px;
     color: #333;
-    line-height: 1;
+}
+
+// Active
+
+.active {
+    background-color: #e5efff !important;
+    &:hover {
+        background-color: #e5efff !important;
+    }
 }
 
 

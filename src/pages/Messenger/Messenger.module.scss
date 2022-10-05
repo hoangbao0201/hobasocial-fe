@@ -39,6 +39,7 @@
 .content-message {
     display: flex;
     flex-direction: column;
+    position: relative;
 
     .content-header {
         width: 100%;
@@ -51,9 +52,10 @@
     }
     .list-messages {
         overflow: auto;
-        padding: 15px 15px;
+        padding: 15px 15px  calc(var(--content-footer-height) + 15px) 15px;
         background-color: #f8f8f8;
-        height: calc(100vh - var(--header-height) - var(--content-header-height) - var(--content-footer-height));
+        height: calc(100vh - var(--header-height) - var(--content-header-height));
+        // var(--content-footer-height)
     }
 }
 
@@ -78,7 +80,7 @@
 
 .grid-message-row {
     display: flex;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
 
     .messages-item {
         max-width: 45%;
@@ -108,12 +110,21 @@
 // Content footer send 
 
 .content-footer {
+    bottom: 0px;
+    width: 100%;
+    flex: 1;
+    bottom: 0px;
     height: var(--content-footer-height);
     background-color: #ffff;
+    position: absolute;
 
     .content-footer-grid {
         width: 100%;
-        position: relative;
+        // position: relative;
+        // width: 100vh;
+
+
+
 
         display: flex;
         align-items: center;
@@ -207,8 +218,15 @@
     }
 }
 
-@media (max-width: 600px) {
+@media (min-width: 500px) and (max-width: 600px) {
     .messages-item {
         max-width: 55% !important;
     }
 }
+
+@media (max-width: 500px) {
+    .messages-item {
+        max-width: 80% !important;
+    }
+}
+

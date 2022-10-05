@@ -68,7 +68,7 @@
 
 .icon-delete-input {
     width: var(--input-space);
-    right: 15px;
+    right: 0px;
     position: absolute;
 
     svg {
@@ -149,25 +149,6 @@
     }
 }
 
-// Navbar list user search
-.list-user-search {
-    top: 43px;
-    right: 15px;
-    left: 15px;
-    max-height: 300px;
-    overflow-y: auto;
-    position: absolute;
-    display: inline-block;
-    background-color: #ffff;
-    
-    // overflow: hidden;
-    border-radius: 0px 0px 8px 8px;
-    border-top: 1px solid #0068ff;
-    border-right: 1px solid #0068ff;
-    border-left: 1px solid #0068ff;
-    border-bottom: 1px solid #0068ff;
-}
-
 // Avatar message
 
 .avatar-user {
@@ -192,7 +173,6 @@
     justify-content: space-between;
 
     .content-title-text {
-        // font-weight: 500;
         padding-left: 15px;
         padding-right: 5px;
         line-height: 1.5;

@@ -12,7 +12,7 @@ import { io } from "socket.io-client";
 import { apiUrl } from "~/context/constant";
 import { AuthContext } from "~/context/authContext";
 import useDebounce from "~/hooks/useDebounce";
-import SuggestSearch from "../SuggestSearch";
+import SuggestSearchUserMsg from "./SuggestSearchUserMsg";
 
 const cx = classNames.bind(styles);
 
@@ -198,7 +198,7 @@ function Sidebar({ active, action }) {
     };
 
     // Delete value input
-    const eventDeleteInput = () => {
+    const eventDeleteValueInput = () => {
         setValueInputSearch("");
         inputRef.current.focus();
     };
@@ -212,6 +212,12 @@ function Sidebar({ active, action }) {
     const eventActiveItemMessage = (data) => {
         action(data);
     };
+
+    // Close suggest search
+    const eventCloseSuggestSearch = () => {
+        setFocusInputSearch(false);
+        setValueInputSearch("");
+    }
 
     // Send message
     const eventSendMessage = () => {
@@ -237,13 +243,11 @@ function Sidebar({ active, action }) {
     } else {
         contentSidebar = (
             <>
-                {!!valueInputSearch && (
-                    <div className={cx("list-user-search", "dev-scroll")}>
-                        {resultListUserSearch.map((user, index) => {
-                            return <SuggestSearch key={index} data={user} />;
-                        })}
-                    </div>
-                )}
+                <SuggestSearchUserMsg
+                    data={resultListUserSearch}
+                    active={active}
+                    action={eventActiveItemMessage}
+                />
             </>
         );
     }
@@ -266,7 +270,7 @@ function Sidebar({ active, action }) {
                     {!!valueInputSearch && (
                         <i
                             className={cx("icon-delete-input")}
-                            onClick={eventDeleteInput}
+                            onClick={eventDeleteValueInput}
                         >
                             {iconDeleteInput}
                         </i>
@@ -275,7 +279,7 @@ function Sidebar({ active, action }) {
                 {focusInputSearch && (
                     <span
                         className={cx("close-suggest-sidebar")}
-                        onClick={() => setFocusInputSearch(false)}
+                        onClick={eventCloseSuggestSearch}
                     >
                         Đóng
                     </span>

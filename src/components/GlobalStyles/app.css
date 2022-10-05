@@ -142,3 +142,12 @@
     width: 8.333333333333333%;
     padding: 0px 5px;
 }
+
+/* Text more */
+
+.dev-text-more {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    display: block;
+}

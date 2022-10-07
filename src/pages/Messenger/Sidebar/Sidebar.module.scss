@@ -1,0 +1,249 @@
+:root {
+    --input-height: 33px;
+    --input-space: 40px;
+}
+
+.wrapper {
+    top: 0px;
+    bottom: 0px;
+    width: 100%;
+    max-width: 340px;
+    background-color: #ffff;
+    border-right: 1px solid #ccc;
+    position: relative;
+
+    overflow: hidden;
+}
+
+// Search
+
+.side-search {
+    width: 100%;
+    // max-width: 100%;
+    padding: 10px 15px;
+    color: #ccc;
+    display: flex;
+    align-items: center;
+    position: relative;
+    border-bottom: 1px solid #eeeff2;
+}
+
+.grid-input-search {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+.input-search {
+    flex: 1;
+    width: 100%;
+    height: var(--input-height);
+    padding-right: var(--input-space);
+    padding-left: var(--input-space);
+    font-size: 14px;
+    border: none;
+    outline: none;
+    border-radius: 6px;
+    background-color: #eeeff2;
+
+    &:focus {
+        outline: 1px solid #0068ff;
+        background-color: #ffff;
+    }
+}
+
+.icon-search {
+    width: var(--input-space);
+    position: absolute;
+    display: block;
+    cursor: pointer;
+
+    svg {
+        width: 22px;
+        display: block;
+        margin: auto;
+    }
+}
+
+.icon-delete-input {
+    width: var(--input-space);
+    right: 0px;
+    position: absolute;
+
+    svg {
+        width: 16px;
+        height: 16px;
+        margin: auto;
+        display: block;
+        cursor: pointer;
+
+        &:hover {
+            fill: #0068ff;
+        }
+    }
+}
+
+// Close suggest sidebar
+
+.close-suggest-sidebar {
+    color: #000;
+    font-size: 15px;
+    font-weight: 600;
+    padding: 5px 10px;
+    margin-left: 10px;
+    border-radius: 6px;
+    cursor: pointer;
+
+    &:hover {
+        background-color: var(--button-hover);
+    }
+}
+
+// Item message
+
+.list-user-message {
+    height: 90%;
+    padding: 10px 0px;
+    overflow-y: auto;
+
+    &::-webkit-scrollbar {
+        position: absolute;
+        width: 10px;
+    }
+
+    &::-webkit-scrollbar-track {
+        border-radius: 4px;
+        background-color: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        border-radius: 4px;
+        background-color: #9ca7b0c8;
+    }
+}
+
+.item-message {
+    padding: 10px 15px;
+    display: flex;
+
+    &:hover {
+        cursor: pointer;
+        background-color: #eeeff2;
+    }
+
+    &:hover {
+        .content-title-time-new {
+            display: none;
+        }
+        .item__grid-side-action {
+            width: 50px;
+        }
+    }
+}
+
+.active {
+    background-color: #e5efff !important;
+    &:hover {
+        background-color: #e5efff !important;
+    }
+}
+
+// Avatar message
+
+.avatar-user {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+// Item content
+
+.item__grid-content {
+    width: 100%;
+    overflow: hidden;
+}
+
+.item__content-title {
+    width: 100%;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .content-title-text {
+        padding-left: 15px;
+        padding-right: 5px;
+        line-height: 1.5;
+
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+        display: block;
+    }
+    .content-title-time-new {
+        white-space: nowrap;
+        font-size: 12px;
+    }
+}
+
+.item__content-message {
+    font-size: 14px;
+    line-height: 1.5;
+    color: #72808e;
+    padding-left: 15px;
+    padding-right: 5px;
+
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    display: block;
+}
+
+// Message action
+
+.item__grid-side-action {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    width: 0px;
+    overflow: hidden;
+
+    .side-list-action {
+        svg {
+            width: 25px;
+            fill: #abb4bc;
+            display: block;
+        }
+
+        svg:hover {
+            fill: #0068ff !important;
+        }
+    }
+}
+
+.action-more-menu-item {
+    padding: 8px 15px;
+
+    &:hover {
+        background-color: #eeee;
+    }
+    & ~ .menu-item-delete {
+        color: #db342e;
+    }   
+}
+
+// Responsive
+
+@media (max-width: 800px) {
+    .wrapper {
+        max-width: 100%;
+        width: 100vh !important;
+    }
+
+    .wrapper.checked {
+        width: 0px !important;
+        overflow: hidden;
+    }
+}

@@ -168,6 +168,29 @@ function AuthContextProvider({ children }) {
         }
     };
 
+    const uploadAvatar = async (data) => {
+        try {
+            const response = await axios.post(`${apiUrl}/api/auth/upload-avatar`, data);
+
+            return response.data;
+        } catch (error) {
+            if(error.response.data) {
+                return error.response.data;
+            }
+            else {
+                return {
+                    success: false,
+                    msg: error.msg
+                };
+            }
+        }
+    }
+
+    const setOneState = async (name, value) => {
+        // await dispatch({ ...state, [name]: value });
+        console.log({ name: value })
+    }
+
     const logoutUser = async () => {
         localStorage.removeItem("TokenUser");
         dispatch({
@@ -188,6 +211,8 @@ function AuthContextProvider({ children }) {
         getAllUser,
         logoutUser,
         searchUser,
+        setOneState,
+        uploadAvatar,
     };
     return (
         <AuthContext.Provider value={dataAuthContext}>

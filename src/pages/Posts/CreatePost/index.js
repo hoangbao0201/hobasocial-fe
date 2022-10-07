@@ -1,21 +1,9 @@
 import classNames from "classnames/bind";
-import styles from "./ListPost.module.scss";
-
-import { iconComment, iconHeart, iconHeartFull } from "~/.public/icon";
-import InfiniteScroll from "react-infinite-scroll-component";
-import { useContext, useEffect, useState } from "react";
-import { AuthContext } from "~/context/authContext";
+import styles from "./CreatePost.module.scss";
 
 const cx = classNames.bind(styles);
 
-const CardItem = () => {
-    const likePost = true;
-
-    const eventChangeImageCard = (e) => {
-        console.log(e);
-        e.target.src = "/images/avatar-default.png";
-        e.target.onError = null;
-    };
+function CreatePost() {
     return (
         <div className={cx("card")}>
             <div className={cx("card-content")}>
@@ -71,45 +59,6 @@ const CardItem = () => {
             </div>
         </div>
     );
-};
-
-// ---
-
-function ListPost() {
-    const { setOneState, getAllUser } = useContext(AuthContext);
-
-    const [state, setState] = useState({
-        items: Array.from({ length: 5 }),
-    });
-
-    const eventAddState = () => {
-        setTimeout(() => {
-            setState({
-                items: state.items.concat(Array.from({ length: 5 })),
-            });
-        }, 1000);
-    };
-
-    useEffect(() => {
-        setOneState("allUser", getAllUser());
-    }, []);
-
-    return (
-        <div className={cx("content-list-post")}>
-            <div>
-            </div>
-            <InfiniteScroll
-                dataLength={state.items.length}
-                next={eventAddState}
-                hasMore={true}
-                loader={<h4>Loading...</h4>}
-            >
-                {state.items.map((i, index) => (
-                    <CardItem key={index} />
-                ))}
-            </InfiniteScroll>
-        </div>
-    );
 }
 
-export default ListPost;
+export default CreatePost;

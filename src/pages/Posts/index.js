@@ -7,21 +7,10 @@ import ScrollTop from "~/components/Layouts/ScrollTop";
 import ListPost from "./ListPost";
 import { useContext } from "react";
 import { AuthContext } from "~/context/authContext";
+import SidebarListUser from "./SidebarListUser";
+import SidebarWeather from "./SidebarWeather";
 
 const cx = classNames.bind(styles);
-
-const SidebarItemUser = () => {
-    return (
-        <div className={cx("item-user")}>
-            <img
-                className={cx("item-user-image")}
-                src="https://s120-ava-talk.zadn.vn/e/d/e/4/1/120/9759d738572412317209f29511d43f57.jpg"
-                alt="avatar"
-            />
-            <div className={cx("item-user-name")}>Nguyễn Hoàng Bảo</div>
-        </div>
-    );
-};
 
 function Posts() {
     const {
@@ -32,7 +21,7 @@ function Posts() {
         return;
     } else {
         return (
-            <div className={cx("wrapper", "dev-scroll")}>
+            <div className={cx("wrapper")}>
                 <Header />
                 <div className={cx("container")}>
                     <div className={cx("content")}>
@@ -42,15 +31,7 @@ function Posts() {
                                 "dev-col-3"
                             )}
                         >
-                            <div className={cx("grid-weather")}>
-                                <div
-                                    className={cx(
-                                        "content-sidebar-weather-title"
-                                    )}
-                                >
-                                    Thời tiết
-                                </div>
-                            </div>
+                            <SidebarWeather />
                         </div>
 
                         <div className={cx("content-list-card", "dev-col-6")}>
@@ -63,21 +44,12 @@ function Posts() {
                                 "dev-col-3"
                             )}
                         >
-                            <div className={cx("grid-list-user")}>
-                                <div
-                                    className={cx(
-                                        "content-sidebar-list-user-title"
-                                    )}
-                                >
-                                    Người liên hệ
-                                </div>
-                                <SidebarItemUser />
-                            </div>
+                            <SidebarListUser />
                         </div>
                     </div>
+                <ScrollTop />
                 </div>
                 <Footer />
-                <ScrollTop />
             </div>
         );
     }

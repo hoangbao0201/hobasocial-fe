@@ -151,3 +151,9 @@
     white-space: nowrap;
     display: block;
 }
+
+/* Customize */
+
+.infinite-scroll-component__outerdiv {
+    width: 100%;
+}

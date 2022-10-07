@@ -1,0 +1,68 @@
+
+// Form
+
+.form-upload-avatar {
+    padding: 15px 0px;
+    margin: 0px 15px;
+
+    .form-upload-name {
+        font-size: 22px;
+        text-align: center;
+        padding: 15px 0px;
+        margin: 0px 15px;
+    }
+}
+
+.form-info-user {
+    max-width: 400px;
+    padding: 15px 0px;
+    margin: 0px 15px;
+    position: relative;
+
+    .form-group {
+    }
+
+    .form-group-input {
+        height: 40px;
+        width: 100%;
+    }
+}
+
+// Password
+
+.icon-action-password {
+    padding: 7px 6px;
+    cursor: pointer;
+    border-radius: 50%;
+    position: absolute;
+    -webkit-user-select: none;
+    right: 6px;
+    transform: translateY(20%);
+
+    svg {
+        width: 16px;
+        display: block;
+    }
+    &:hover {
+        background-color: #cccc;
+    }
+}
+
+// Button update
+
+.button-update {
+    color: #ffff !important;
+    background-color: blue !important;
+}
+
+// Response
+
+@media (max-width: 800px) {
+    .form-info-user {
+        width: 100% !important;
+        padding: 0px 15px !important;
+    }
+    .form-upload-avatar {
+        width: 100% !important;
+    }
+}

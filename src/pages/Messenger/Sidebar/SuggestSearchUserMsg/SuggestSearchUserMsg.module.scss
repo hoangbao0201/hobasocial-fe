@@ -1,0 +1,41 @@
+.title-search {
+    color: #333;
+    padding: 0px 15px 15px 15px;
+}
+
+.item-search {
+    width: 100%;
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    transition: 0.01s;
+
+    &:hover {
+        background-color: #eeeff2;
+    }
+}
+
+.image {
+    width: 36px;
+    height: 36px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.name {
+    margin-left: 10px;
+    font-size: 17px;
+    color: #333;
+}
+
+// Active
+
+.active {
+    background-color: #e5efff !important;
+    &:hover {
+        background-color: #e5efff !important;
+    }
+}
+
+

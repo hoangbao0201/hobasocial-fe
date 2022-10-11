@@ -70,6 +70,9 @@ function Login() {
                 warningField: ["username"],
                 msg: dataServer.msg,
             })
+            setTimeout(() => {
+                setWarning(null);
+            }, 5000);
         }
 
         // ---

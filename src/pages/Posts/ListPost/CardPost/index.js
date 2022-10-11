@@ -1,9 +1,29 @@
 import classNames from "classnames/bind";
-import styles from "./CreatePost.module.scss";
+import { useState } from "react";
+import { iconComment, iconHeart, iconHeartFull } from "~/.public/icon";
+import styles from "./CardPost.module.scss";
 
 const cx = classNames.bind(styles);
 
-function CreatePost() {
+function CardPost({ post, user, likePost, unlikePost }) {
+    const [isLike, setIsLike] = useState(post.likes.includes(user._id));
+    const [countLikes, setCountLikes] = useState(post.likes.length);
+
+    const eventLikePost = async () => {
+        if (isLike) {
+            setCountLikes(countLikes - 1);
+        } else {
+            setCountLikes(countLikes + 1);
+        }
+        setIsLike(!isLike);
+
+        if (post.likes.includes(user._id)) {
+            await unlikePost(post._id);
+        } else {
+            await likePost(post._id);
+        }
+    };
+
     return (
         <div className={cx("card")}>
             <div className={cx("card-content")}>
@@ -11,36 +31,48 @@ function CreatePost() {
                     <div className={cx("card-grid-header-image")}>
                         <img
                             className={cx("card-header-image")}
-                            src="https://s120-ava-talk.zadn.vn/e/d/e/4/1/120/9759d738572412317209f29511d43f57.jpg"
+                            src={
+                                post.postedBy.avatar.url ||
+                                "/images/avatar-default.png"
+                            }
                             alt="avatar"
-                            onError={eventChangeImageCard}
                         />
                     </div>
                     <div className={cx("card-grid-header-info")}>
                         <div className={cx("card-header-name")}>
-                            Nguyễn Hoàng Bảo
+                            {post.postedBy.name}
                         </div>
                         <div className={cx("card-header-time")}>
-                            10 giờ trước
+                            {post.postedBy.createdAt}
                         </div>
                     </div>
                 </div>
+                <div className={cx("content-text-post")}>{post.content}</div>
                 <div className={cx("card-grid-content-post")}>
-                    <img
+                    {/* <img
                         className={cx("card-content-image")}
                         src="/images/image-post.png"
-                    />
+                    /> */}
                 </div>
+
+                <div className={cx("post-cout-like", `${isLike && "liked"}`)}>
+                    {/* {iconHeartFull} */}
+                    {likePost ? iconHeartFull : iconHeart}
+                    {" "}
+                    {countLikes}
+                </div>
+                <div className={cx("dev-devider")}></div>
                 <div className={cx("card-grid-footer")}>
                     <span
                         className={cx(
                             "card-footer-like",
                             "card-footer-action",
-                            `${likePost && "liked"}`
+                            `${isLike && "liked"}`
                         )}
+                        onClick={eventLikePost}
                     >
                         <i className={cx("card-footer-like-icon")}>
-                            {likePost ? iconHeartFull : iconHeart}
+                            {isLike ? iconHeartFull : iconHeart}
                         </i>
                         Thích
                     </span>
@@ -56,9 +88,10 @@ function CreatePost() {
                         Bình luận
                     </span>
                 </div>
+                <div className={cx("dev-devider")}></div>
             </div>
         </div>
     );
 }
 
-export default CreatePost;
+export default CardPost;

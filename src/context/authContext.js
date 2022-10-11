@@ -188,7 +188,6 @@ function AuthContextProvider({ children }) {
 
     const setOneState = async (name, value) => {
         // await dispatch({ ...state, [name]: value });
-        console.log({ name: value })
     }
 
     const logoutUser = async () => {

@@ -23,8 +23,8 @@
 
 .card-grid-header-image {
     .card-header-image {
-        width: 45px;
-        height: 45px;
+        width: 44px;
+        height: 44px;
         border-radius: 50%;
         object-fit: cover;
     }
@@ -43,6 +43,11 @@
     }
 }
 
+.content-text-post {
+    padding: 8px 0px;
+    margin: 0px 15px;
+}
+
 .card-grid-content-post {
     width: 100%;
     background-color: #eeee;
@@ -53,6 +58,19 @@
         display: block;
     }
 }
+
+// Post count like
+
+.post-cout-like {
+    padding: 5px 0px;
+    margin: 0px 15px;
+
+    svg {
+        width: 12px;
+    }
+}
+
+// Post footer action (like, comment)
 
 .card-grid-footer {
     display: flex;
@@ -105,5 +123,15 @@
 .card-footer-action {
     &:hover {
         background-color: #dddd;
+    }
+}
+
+// Checked
+
+.liked {
+    color: blue;
+    font-weight: 600;
+    svg {
+        fill: red;
     }
 }

@@ -5,109 +5,62 @@ import { iconComment, iconHeart, iconHeartFull } from "~/.public/icon";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "~/context/authContext";
+import { PostContext } from "~/context/postContext";
+import CardPost from "./CardPost";
+import CardCreatePost from "./CardCreatePost";
 
 const cx = classNames.bind(styles);
 
-const CardItem = () => {
-    const likePost = true;
-
-    const eventChangeImageCard = (e) => {
-        console.log(e);
-        e.target.src = "/images/avatar-default.png";
-        e.target.onError = null;
-    };
-    return (
-        <div className={cx("card")}>
-            <div className={cx("card-content")}>
-                <div className={cx("card-grid-header")}>
-                    <div className={cx("card-grid-header-image")}>
-                        <img
-                            className={cx("card-header-image")}
-                            src="https://s120-ava-talk.zadn.vn/e/d/e/4/1/120/9759d738572412317209f29511d43f57.jpg"
-                            alt="avatar"
-                            onError={eventChangeImageCard}
-                        />
-                    </div>
-                    <div className={cx("card-grid-header-info")}>
-                        <div className={cx("card-header-name")}>
-                            Nguyễn Hoàng Bảo
-                        </div>
-                        <div className={cx("card-header-time")}>
-                            10 giờ trước
-                        </div>
-                    </div>
-                </div>
-                <div className={cx("card-grid-content-post")}>
-                    <img
-                        className={cx("card-content-image")}
-                        src="/images/image-post.png"
-                    />
-                </div>
-                <div className={cx("card-grid-footer")}>
-                    <span
-                        className={cx(
-                            "card-footer-like",
-                            "card-footer-action",
-                            `${likePost && "liked"}`
-                        )}
-                    >
-                        <i className={cx("card-footer-like-icon")}>
-                            {likePost ? iconHeartFull : iconHeart}
-                        </i>
-                        Thích
-                    </span>
-                    <span
-                        className={cx(
-                            "card-footer-comment",
-                            "card-footer-action"
-                        )}
-                    >
-                        <i className={cx("card-footer-comment-icon")}>
-                            {iconComment}
-                        </i>
-                        Bình luận
-                    </span>
-                </div>
-            </div>
-        </div>
-    );
-};
-
-// ---
-
-function ListPost() {
-    const { setOneState, getAllUser } = useContext(AuthContext);
-
-    const [state, setState] = useState({
-        items: Array.from({ length: 5 }),
-    });
-
-    const eventAddState = () => {
-        setTimeout(() => {
-            setState({
-                items: state.items.concat(Array.from({ length: 5 })),
-            });
-        }, 1000);
-    };
+function ListPost({ user }) {
+    const { getMutiplePosts, likePost, unlikePost } = useContext(PostContext);
+    const [posts, setPosts] = useState([]);
+    const [page, setPage] = useState(1);
 
     useEffect(() => {
-        setOneState("allUser", getAllUser());
+        getAllPosts();
     }, []);
+
+    const getAllPosts = async () => {
+        const dataServerAllPosts = await getMutiplePosts(1, 5);
+        setPosts(dataServerAllPosts.posts);
+    };
+
+    const getNewPosts = async () => {
+        const dataServerAllPosts = await getMutiplePosts(page + 1, 5);
+        setPage(page + 1);
+
+        const newPosts = [...posts, ...dataServerAllPosts.posts];
+        // console.log("old: ", posts)
+        // console.log("new: ", newPosts)
+
+        // setTimeout(() => {
+        setPosts(newPosts);
+        // }, 5000)
+    };
 
     return (
         <div className={cx("content-list-post")}>
-            <div>
-            </div>
-            <InfiniteScroll
-                dataLength={state.items.length}
-                next={eventAddState}
-                hasMore={true}
-                loader={<h4>Loading...</h4>}
-            >
-                {state.items.map((i, index) => (
-                    <CardItem key={index} />
-                ))}
-            </InfiniteScroll>
+            <CardCreatePost />
+            {posts.length === 0 ? (
+                <div>Loading</div>
+            ) : (
+                <InfiniteScroll
+                    dataLength={posts.length}
+                    next={getNewPosts}
+                    hasMore={true}
+                    loader={<h4>Loading...</h4>}
+                >
+                    {posts.map((post, index) => (
+                        <CardPost
+                            key={index}
+                            post={post}
+                            user={user}
+                            likePost={likePost}
+                            unlikePost={unlikePost}
+                        />
+                    ))}
+                </InfiniteScroll>
+            )}
         </div>
     );
 }

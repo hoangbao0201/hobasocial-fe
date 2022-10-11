@@ -21,10 +21,10 @@ const MenuDropdown = () => {
     return (
         <div className={cx("dropdown")}>
             <a href="/" className={cx("dropdown-item")}>
-                Trang cá nhân
-            </a>
-            <a href="/posts" className={cx("dropdown-item")}>
                 Bài viết
+            </a>
+            <a href="/messenger" className={cx("dropdown-item")}>
+                Tin nhắn
             </a>
             <a href="/update-profile" className={cx("dropdown-item")}>
                 Thông tin cá nhân

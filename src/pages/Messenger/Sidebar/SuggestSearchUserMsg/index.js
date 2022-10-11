@@ -17,9 +17,9 @@ function SuggestSearchUserMsg({ data, active, action }) {
                                 <img
                                     className={cx("image")}
                                     src={
-                                        !!user
-                                            ? !!user.avatar
-                                                ? user.avatar
+                                        !!user.avatar
+                                            ? !!user.avatar.url
+                                                ? user.avatar.url
                                                 : initialImage
                                             : initialImage
                                     }

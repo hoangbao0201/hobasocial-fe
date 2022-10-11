@@ -11,8 +11,8 @@ const publicRouter = [
     { path: "/auth/login", component: Login},
     { path: "/auth/register", component: Register},
 
-    { path: "/", component: Messenger, layout: CheckUser},
-    { path: "/posts", component: Posts, layout: CheckUser},
+    { path: "/", component: Posts, layout: CheckUser},
+    { path: "/messenger", component: Messenger, layout: CheckUser},
     { path: "/update-profile", component: UpdateUser, layout: CheckUser},
     
 ]

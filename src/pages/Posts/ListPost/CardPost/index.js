@@ -1,6 +1,7 @@
 import classNames from "classnames/bind";
 import { useState } from "react";
 import { iconComment, iconHeart, iconHeartFull } from "~/.public/icon";
+import Avatar from "~/components/Layouts/Avatar";
 import styles from "./CardPost.module.scss";
 
 const cx = classNames.bind(styles);
@@ -28,16 +29,7 @@ function CardPost({ post, user, likePost, unlikePost }) {
         <div className={cx("card")}>
             <div className={cx("card-content")}>
                 <div className={cx("card-grid-header")}>
-                    <div className={cx("card-grid-header-image")}>
-                        <img
-                            className={cx("card-header-image")}
-                            src={
-                                post.postedBy.avatar.url ||
-                                "/images/avatar-default.png"
-                            }
-                            alt="avatar"
-                        />
-                    </div>
+                    <Avatar image={post.postedBy.avatar.url}/>
                     <div className={cx("card-grid-header-info")}>
                         <div className={cx("card-header-name")}>
                             {post.postedBy.name}

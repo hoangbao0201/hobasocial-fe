@@ -25,6 +25,24 @@ const PostContextProvider = ({ children }) => {
         }
     };
 
+    const createPost = async (data) => {
+        try {
+            const response = await axios.post(`${apiUrl}/api/post/create-post`, data);
+
+            return response.data;
+        } catch (error) {
+            if(error.data.response) {
+                return error.data.response;
+            }
+            else {
+                return {
+                    success: false,
+                    msg: error.msg
+                }
+            }
+        }
+    }
+
     const likePost = async (data) => {
         try {
             const response = await axios.put(`${apiUrl}/api/post/like-post/${data}`)
@@ -61,11 +79,31 @@ const PostContextProvider = ({ children }) => {
         }
     }
 
+    const uploadSingleImage = async (data) => {
+        try {
+            const response = await axios.post(`${apiUrl}/api/post/upload-single-image`, data)
+
+            return response.data;
+        } catch (error) {
+            if(error.data.response) {
+                return error.data.response;
+            }
+            else {
+                return {
+                    success: false,
+                    msg: error.msg
+                }
+            }
+        }
+    }
+
     const dataPostContext = {
         state,
         getMutiplePosts,
+        createPost,
         likePost,
-        unlikePost
+        unlikePost,
+        uploadSingleImage
     };
     return (
         <PostContext.Provider value={dataPostContext}>

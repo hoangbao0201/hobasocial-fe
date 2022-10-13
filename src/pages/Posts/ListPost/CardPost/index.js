@@ -29,7 +29,7 @@ function CardPost({ post, user, likePost, unlikePost }) {
         <div className={cx("card")}>
             <div className={cx("card-content")}>
                 <div className={cx("card-grid-header")}>
-                    <Avatar image={post.postedBy.avatar.url}/>
+                    <Avatar image={post.postedBy.avatar.url} />
                     <div className={cx("card-grid-header-info")}>
                         <div className={cx("card-header-name")}>
                             {post.postedBy.name}
@@ -41,17 +41,17 @@ function CardPost({ post, user, likePost, unlikePost }) {
                 </div>
                 <div className={cx("content-text-post")}>{post.content}</div>
                 <div className={cx("card-grid-content-post")}>
-                    {/* <img
-                        className={cx("card-content-image")}
-                        src="/images/image-post.png"
-                    /> */}
+                    {!!post.image && !!post.image.url && (
+                        <img
+                            className={cx("card-content-image")}
+                            src={post.image.url}
+                        />
+                    )}
                 </div>
 
                 <div className={cx("post-cout-like", `${isLike && "liked"}`)}>
                     {/* {iconHeartFull} */}
-                    {likePost ? iconHeartFull : iconHeart}
-                    {" "}
-                    {countLikes}
+                    {likePost ? iconHeartFull : iconHeart} {countLikes}
                 </div>
                 <div className={cx("dev-devider")}></div>
                 <div className={cx("card-grid-footer")}>

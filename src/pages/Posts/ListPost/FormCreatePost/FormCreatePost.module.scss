@@ -4,8 +4,9 @@
 }
 
 .content {
-    position: relative;
+    margin-right: 4px;
     display: block;
+    position: relative;
 }
 
 // Title form
@@ -59,17 +60,42 @@
 .grid-content-post {
     // padding: 5px 15px;
     min-height: 200px;
-    max-height: 300px;
+    max-height: 380px;
 
     display: flex;
     flex-direction: column;
 
     .grid-image-post {
-        padding-top: 10px;
-        width: 100%;
+        margin: 12px 15px;
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        position: relative;
     
         .image {
             width: 100%;
+        }
+        .icon-close {
+            width: 26px;
+            height: 26px;
+            top: 15px;
+            right: 15px;
+            cursor: pointer;
+            position: absolute;
+            border-radius: 50%;
+            background-color: #eeee;
+    
+            display: flex;
+            align-items: center;
+            justify-content: center;
+    
+            &:hover {
+                background-color: #dddd;
+            }
+    
+            svg {
+                width: 12px;
+            }
         }
     }
 }
@@ -89,6 +115,11 @@
         flex: 1;
         font-size: 20px;
         font-weight: 400;
+        margin-right: 10px;
+
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
     }
 }
 

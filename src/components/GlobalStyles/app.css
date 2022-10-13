@@ -6,7 +6,7 @@
 
 .dev-scroll::-webkit-scrollbar {
     position: absolute;
-    width: 10px;
+    width: 8px;
 }
 
 .dev-scroll::-webkit-scrollbar-track {

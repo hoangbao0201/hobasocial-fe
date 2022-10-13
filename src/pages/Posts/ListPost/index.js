@@ -53,6 +53,7 @@ function ListPost({ user }) {
                             display: "table",
                         },
                         overlay: {
+                            zIndex: "101",
                             backgroundColor: "rgba(0, 0, 0, 0.2)",
                         },
                     }}

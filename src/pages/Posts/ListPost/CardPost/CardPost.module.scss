@@ -19,6 +19,29 @@
 .card-grid-header {
     padding: 10px 15px;
     display: flex;
+    position: relative;
+
+    .icon-close {
+        width: 30px;
+        height: 30px;
+        right: 10px;
+        cursor: pointer;
+        position: absolute;
+        border-radius: 50%;
+        background-color: #eeee;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        &:hover {
+            background-color: #dddd;
+        }
+
+        svg {
+            width: 18px;
+        }
+    }
 }
 
 .card-grid-header-info {
@@ -112,6 +135,7 @@
 }
 
 .card-footer-action {
+    -webkit-user-select: none;
     &:hover {
         background-color: #dddd;
     }
@@ -124,5 +148,26 @@
     font-weight: 600;
     svg {
         fill: red;
+    }
+}
+
+// Dropdown
+
+.dropdown {
+    .action-delete-post {
+        cursor: pointer;
+        padding: 10px 15px 10px 8px;
+
+        &:hover {
+            background-color: #eeee;
+        }
+    }
+    .action-update-post {
+        cursor: pointer;
+        padding: 10px 15px 10px 8px;
+
+        &:hover {
+            background-color: #eeee;
+        }
     }
 }

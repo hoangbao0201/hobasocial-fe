@@ -5,92 +5,68 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import { useContext, useEffect, useState } from "react";
 import { PostContext } from "~/context/postContext";
 import CardPost from "./CardPost";
-import Modal from "react-modal";
-import FormCreatePost from "./FormCreatePost";
-import Avatar from "~/components/Layouts/Avatar";
+import CardCreatePost from "./CardCreatePost";
+import LoadingPost from "~/components/Layouts/Loading/LoadingPost";
 
 const cx = classNames.bind(styles);
 
 function ListPost({ user }) {
-    const { getMutiplePosts, likePost, unlikePost } = useContext(PostContext);
+    const { getMutiplePosts, likePost, unlikePost, deletePost } = useContext(PostContext);
     const [posts, setPosts] = useState([]);
+
     const [page, setPage] = useState(1);
-    const [isModal, setIsModal] = useState(false);
 
     useEffect(() => {
         getAllPosts();
     }, []);
 
     const getAllPosts = async () => {
-        const dataServerAllPosts = await getMutiplePosts(1, 5);
+        const dataServerAllPosts = await getMutiplePosts(page, 10);
         setPosts(dataServerAllPosts.posts);
     };
 
-    const eventIsShowModal = () => {
-        setIsModal(!isModal);
-    };
-
     const getNewPosts = async () => {
-        const dataServerAllPosts = await getMutiplePosts(page + 1, 5);
+        const dataServerAllPosts = await getMutiplePosts(page + 1, 10);
         setPage(page + 1);
 
+        // New posts
         const newPosts = [...posts, ...dataServerAllPosts.posts];
-
         setPosts(newPosts);
     };
 
     return (
         <div className={cx("content-list-post")}>
-            <div className={cx("card-create-post")}>
-                <Modal
-                    isOpen={isModal}
-                    onRequestClose={eventIsShowModal}
-                    ariaHideApp={false}
-                    style={{
-                        content: {
-                            margin: "auto",
-                            padding: "0px",
-                            display: "table",
-                        },
-                        overlay: {
-                            zIndex: "101",
-                            backgroundColor: "rgba(0, 0, 0, 0.2)",
-                        },
-                    }}
-                >
-                    <FormCreatePost user={user} actionQuit={setIsModal}/>
-                </Modal>
-
-                <div className={cx("card-create-post-content")}>
-                    <Avatar image={user.avatar.url} />
-                    <button
-                        className={cx("button-show-modal")}
-                        onClick={eventIsShowModal}
-                    >
-                        {user.name || "Người dùng HoBa"} ơi, bạn đang nghĩ gì thế
-                    </button>
-                </div>
-            </div>
+            <CardCreatePost user={user} actionGetAllPosts={getAllPosts} />
 
             {posts.length === 0 ? (
-                <div>Loading</div>
+                <>
+                    <LoadingPost />
+                    <LoadingPost />
+                    <LoadingPost />
+                    <LoadingPost />
+                    <LoadingPost />
+                </>
             ) : (
-                <InfiniteScroll
-                    dataLength={posts.length}
-                    next={getNewPosts}
-                    hasMore={true}
-                    loader={<h4>Loading...</h4>}
-                >
-                    {posts.map((post, index) => (
-                        <CardPost
-                            key={index}
-                            post={post}
-                            user={user}
-                            likePost={likePost}
-                            unlikePost={unlikePost}
-                        />
-                    ))}
-                </InfiniteScroll>
+                <>
+                    <InfiniteScroll
+                        dataLength={posts.length}
+                        next={getNewPosts}
+                        hasMore={true}
+                        loader={<h4>Loading...</h4>}
+                    >
+                        {posts.map((post, index) => (
+                            <CardPost
+                                key={index}
+                                post={post}
+                                user={user}
+                                likePost={likePost}
+                                unlikePost={unlikePost}
+                                deletePost={deletePost}
+                                actionGetAllPosts={getAllPosts}
+                            />
+                        ))}
+                    </InfiniteScroll>
+                </>
             )}
         </div>
     );

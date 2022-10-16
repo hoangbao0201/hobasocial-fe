@@ -13,14 +13,13 @@ const PostContextProvider = ({ children }) => {
 
             return response.data;
         } catch (error) {
-            if(error.data.response) {
-                return error.data.response;
-            }
-            else {
+            if (error.response.data) {
+                return error.response.data;
+            } else {
                 return {
                     success: false,
-                    msg: error.msg
-                }
+                    msg: error.msg,
+                };
             }
         }
     };
@@ -31,14 +30,13 @@ const PostContextProvider = ({ children }) => {
 
             return response.data;
         } catch (error) {
-            if(error.data.response) {
-                return error.data.response;
-            }
-            else {
+            if (error.response.data) {
+                return error.response.data;
+            } else {
                 return {
                     success: false,
-                    msg: error.msg
-                }
+                    msg: error.msg,
+                };
             }
         }
     }
@@ -49,14 +47,13 @@ const PostContextProvider = ({ children }) => {
 
             return response.data;
         } catch (error) {
-            if(error.data.response) {
-                return error.data.response;
-            }
-            else {
+            if (error.response.data) {
+                return error.response.data;
+            } else {
                 return {
                     success: false,
-                    msg: error.msg
-                }
+                    msg: error.msg,
+                };
             }
         }
     }
@@ -67,14 +64,30 @@ const PostContextProvider = ({ children }) => {
 
             return response.data;
         } catch (error) {
-            if(error.data.response) {
-                return error.data.response;
-            }
-            else {
+            if (error.response.data) {
+                return error.response.data;
+            } else {
                 return {
                     success: false,
-                    msg: error.msg
-                }
+                    msg: error.msg,
+                };
+            }
+        }
+    }
+
+    const deletePost = async (data) => {
+        try {
+            const response = await axios.delete(`${apiUrl}/api/post/delete-post/${data}`);
+
+            return response.data;
+        } catch (error) {
+            if (error.response.data) {
+                return error.response.data;
+            } else {
+                return {
+                    success: false,
+                    msg: error.msg,
+                };
             }
         }
     }
@@ -85,14 +98,30 @@ const PostContextProvider = ({ children }) => {
 
             return response.data;
         } catch (error) {
-            if(error.data.response) {
-                return error.data.response;
-            }
-            else {
+            if (error.response.data) {
+                return error.response.data;
+            } else {
                 return {
                     success: false,
-                    msg: error.msg
-                }
+                    msg: error.msg,
+                };
+            }
+        }
+    }
+
+    const addComment = async (data) => {
+        try {
+            const response = await axios.post(`${apiUrl}/api/post/add-comment`, data);
+
+            return response.data;
+        } catch (error) {
+            if (error.response.data) {
+                return error.response.data;
+            } else {
+                return {
+                    success: false,
+                    msg: error.msg,
+                };
             }
         }
     }
@@ -100,9 +129,15 @@ const PostContextProvider = ({ children }) => {
     const dataPostContext = {
         state,
         getMutiplePosts,
+
         createPost,
+        deletePost,
+
         likePost,
         unlikePost,
+
+        addComment,
+        
         uploadSingleImage
     };
     return (

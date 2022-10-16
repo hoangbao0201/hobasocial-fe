@@ -26,7 +26,7 @@ const ItemMessage = ({ data, active, action }) => {
             <div className={cx("item__grid-image")} onClick={action}>
                 <img
                     className={cx("avatar-user")}
-                    src="https://ava-grp-talk.zadn.vn/f/4/1/5/2/360/186753880220d2b93fa14c1eac06441b.jpg"
+                    src="/images/avatar-default.png"
                     alt="avatar_message"
                 />
             </div>

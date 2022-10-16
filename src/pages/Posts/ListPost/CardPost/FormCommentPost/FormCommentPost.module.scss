@@ -1,0 +1,24 @@
+.card-create-comment {
+    animation: fadeIn 2s linear forwards;
+}
+
+.card-create-comment-content {
+    display: flex;
+    padding: 5px 15px;
+}
+
+.grid-input-comment {
+    flex: 1;
+}
+
+
+// Animation
+
+@keyframes fadeIn {
+    from {
+        height: 0px;
+    }
+    to{
+        height: 130px;
+    }
+}

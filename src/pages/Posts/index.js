@@ -9,7 +9,6 @@ import { useContext, useEffect } from "react";
 import { AuthContext } from "~/context/authContext";
 import SidebarListUser from "./SidebarListUser";
 import SidebarWeather from "./SidebarWeather";
-import { PostContext } from "~/context/postContext";
 
 const cx = classNames.bind(styles);
 

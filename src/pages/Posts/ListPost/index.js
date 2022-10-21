@@ -10,33 +10,23 @@ import LoadingPost from "~/components/Layouts/Loading/LoadingPost";
 
 const cx = classNames.bind(styles);
 
-function ListPost({ user }) {
-    const { getMutiplePosts, likePost, unlikePost, deletePost } = useContext(PostContext);
-    const [posts, setPosts] = useState([]);
+function ListPost({ user, posts, setPosts, getAllPosts, getNewPosts }) {
+    const { likePost, unlikePost, deletePost } = useContext(PostContext);
 
-    const [page, setPage] = useState(1);
+    const [isLoadingCreatePost, setIsLoadingCreatePost] = useState(false);
 
     useEffect(() => {
         getAllPosts();
     }, []);
 
-    const getAllPosts = async () => {
-        const dataServerAllPosts = await getMutiplePosts(page, 10);
-        setPosts(dataServerAllPosts.posts);
-    };
-
-    const getNewPosts = async () => {
-        const dataServerAllPosts = await getMutiplePosts(page + 1, 10);
-        setPage(page + 1);
-
-        // New posts
-        const newPosts = [...posts, ...dataServerAllPosts.posts];
-        setPosts(newPosts);
-    };
-
     return (
         <div className={cx("content-list-post")}>
-            <CardCreatePost user={user} actionGetAllPosts={getAllPosts} />
+            <CardCreatePost
+                user={user}
+                posts={posts}
+                setPosts={setPosts}
+                setIsLoadingCreatePost={setIsLoadingCreatePost}
+            />
 
             {posts.length === 0 ? (
                 <>
@@ -48,21 +38,21 @@ function ListPost({ user }) {
                 </>
             ) : (
                 <>
+                    {isLoadingCreatePost && <LoadingPost />}
                     <InfiniteScroll
                         dataLength={posts.length}
                         next={getNewPosts}
                         hasMore={true}
-                        loader={<h4>Loading...</h4>}
+                        loader={<LoadingPost />}
                     >
                         {posts.map((post, index) => (
                             <CardPost
-                                key={index}
-                                post={post}
+                                key={post._id}
                                 user={user}
+                                post={post}
                                 likePost={likePost}
                                 unlikePost={unlikePost}
                                 deletePost={deletePost}
-                                actionGetAllPosts={getAllPosts}
                             />
                         ))}
                     </InfiniteScroll>

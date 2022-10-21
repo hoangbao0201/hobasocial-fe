@@ -1,11 +1,10 @@
 import axios from "axios";
-import { createContext, useReducer, useState } from "react";
+import { createContext } from "react";
 import { apiUrl } from "./constant";
 
 export const PostContext = createContext();
 
 const PostContextProvider = ({ children }) => {
-    const [state, setStateContext] = useState(null);
 
     const getMutiplePosts = async (page, perpage) => {
         try {
@@ -27,6 +26,23 @@ const PostContextProvider = ({ children }) => {
     const createPost = async (data) => {
         try {
             const response = await axios.post(`${apiUrl}/api/post/create-post`, data);
+
+            return response.data;
+        } catch (error) {
+            if (error.response.data) {
+                return error.response.data;
+            } else {
+                return {
+                    success: false,
+                    msg: error.msg,
+                };
+            }
+        }
+    }
+
+    const editPost = async (data, id) => {
+        try {
+            const response = await axios.patch(`${apiUrl}/api/post/edit-post/${id}`, data);
 
             return response.data;
         } catch (error) {
@@ -127,10 +143,10 @@ const PostContextProvider = ({ children }) => {
     }
 
     const dataPostContext = {
-        state,
         getMutiplePosts,
 
         createPost,
+        editPost,
         deletePost,
 
         likePost,

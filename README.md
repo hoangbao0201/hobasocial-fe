@@ -1,70 +1,57 @@
-# Getting Started with Create React App
+# **Introduction**
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+-   This is a social-network project with MERN (MongoDb, Express, ReactJs, NodeJs) + tailwindCss
+# **Page**
 
-## Available Scripts
+###### _(Not logged)_
 
-In the project directory, you can run:
+-   Home.
+![Dark mode](https://res.cloudinary.com/dcwekkkez/image/upload/v1659182962/pt3no8yqcxheh5gh9pbs.png)
+-   Login.
+![Dark mode](https://res.cloudinary.com/dcwekkkez/image/upload/v1659182977/z6vs0znfqoapmgsjld61.png)
+-   Register.
+![Dark mode](https://res.cloudinary.com/dcwekkkez/image/upload/v1659182982/vt38rfswmk1vd6yqwoeq.png)
+-   Forget password.
+![Dark mode](https://res.cloudinary.com/dcwekkkez/image/upload/v1659183352/jgzolk4l2aejm0rrjlv5.png)
+###### _(Logged)_
 
-### `npm start`
+-   Dashboard.
+![Dark mode](https://res.cloudinary.com/dcwekkkez/image/upload/v1659182995/uc2gwx26txbqaac3y6rp.png)
+-   Messenger.
+![Dark mode](https://res.cloudinary.com/dcwekkkez/image/upload/v1659183242/pt1idgk5usv2kta9vfho.png)
+-   Admin page (Only with admin's accounts).
+![Dark mode](https://res.cloudinary.com/dcwekkkez/image/upload/v1659183254/bhyjo17cjtyaznzpjtmi.png)
+-   Profile.
+![Dark mode](https://res.cloudinary.com/dcwekkkez/image/upload/v1659183272/ghzvdp1db5cafsz9x0vm.png)
+-   Update profile.
+![Dark mode](https://res.cloudinary.com/dcwekkkez/image/upload/v1659183289/u4pblu3hehw8ttqryh8e.png)
+-   Information a post.
+![Dark mode](https://res.cloudinary.com/dcwekkkez/image/upload/v1659183804/wzbdifdw8fk7pmjba2wv.png)
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+# **Features**
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+-   Responsive.
+-   Dark mode
+-   Sign in, log out.
+-   Search user in Nav.
+-   Follow user, unfollow user.
+-   Distinguish admin and normal user (admin has blue tick).
+-   Post (in Dashboard page and profile page) :
+    -   Create new post (with text and image).
+    -   Update post.
+    -   Delete post.
+    -   Like and unlike post.
+    -   Add comments (with text and image).
+    -   Delete and update comment.
+    -   Like and unlike comment.
+    -   Add reply comment (with text and image).
+    -   Like and unlike reply comment.
+-   Message:
+    -   Add new user, group receive
+    -   Notification when receiving new messages from other users (sound)
+    -   Search user in chat
+-   Admin-page:
+    -   Statistics of registered people and number of posts.
+    -   Chart showing data by week (chartJS).
+    -   Table showing user and post details.
+-   ...

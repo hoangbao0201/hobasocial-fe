@@ -26,7 +26,7 @@ function SuggestSearchUserMsg({ data, isActive, eventActiveItemMessage }) {
                                 <img
                                     className={cx("image")}
                                     src={
-                                        user.avatar.url ||
+                                        user.avatar?.url ||
                                         "/images/avatar-default.png"
                                     }
                                 />

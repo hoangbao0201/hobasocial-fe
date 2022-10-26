@@ -1,7 +1,12 @@
 import classNames from "classnames/bind";
 import styles from "./Sidebar.module.scss";
 
-import { iconDeleteInput, iconSearch, iconSolidMore } from "~/.public/icon";
+import {
+    iconDeleteInput,
+    iconLoading,
+    iconSearch,
+    iconSolidMore,
+} from "~/.public/icon";
 import { useContext, useEffect, useRef, useState } from "react";
 
 import Tippy from "@tippyjs/react";
@@ -19,7 +24,7 @@ import { MessageContext } from "~/context/message";
 
 const cx = classNames.bind(styles);
 
-const ItemMessage = ({user, data, active, action }) => {
+const ItemMessage = ({ user, data, active, action }) => {
     return (
         <div
             className={cx(
@@ -38,7 +43,9 @@ const ItemMessage = ({user, data, active, action }) => {
                         <img
                             key={people._id}
                             className={cx("avatar-user")}
-                            src={people.avatar.url || "images/avatar-default.png"}
+                            src={
+                                people.avatar.url || "images/avatar-default.png"
+                            }
                             alt="avatar_message"
                         />
                     );
@@ -120,6 +127,7 @@ function Sidebar({
 
     const [focusInputSearch, setFocusInputSearch] = useState(false);
     const [resultListUserSearch, setResultListUserSearch] = useState([]);
+    const [loadingSearch, setLoadingSearch] = useState(false);
     const [valueInputSearch, setValueInputSearch] = useState("");
     const inputRef = useRef();
 
@@ -131,6 +139,8 @@ function Sidebar({
         } else if (textDebounce) {
             eventSearchUser(textDebounce);
         }
+
+        setLoadingSearch(false);
     }, [textDebounce]);
 
     // Search user
@@ -154,6 +164,7 @@ function Sidebar({
 
     // Onchange value search
     const eventOnchangeValueSearch = async (e) => {
+        setLoadingSearch(true);
         setValueInputSearch(e.target.value);
     };
 
@@ -239,13 +250,19 @@ function Sidebar({
                         onChange={eventOnchangeValueSearch}
                         onFocus={() => setFocusInputSearch(true)}
                     />
-                    {!!valueInputSearch && (
-                        <i
-                            className={cx("icon-delete-input")}
-                            onClick={eventDeleteValueInput}
-                        >
-                            {iconDeleteInput}
+                    {loadingSearch ? (
+                        <i className={cx("icon-loading-input")}>
+                            {iconLoading}
                         </i>
+                    ) : (
+                        !!valueInputSearch && (
+                            <i
+                                className={cx("icon-delete-input")}
+                                onClick={eventDeleteValueInput}
+                            >
+                                {iconDeleteInput}
+                            </i>
+                        )
                     )}
                 </div>
                 {focusInputSearch && (

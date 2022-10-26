@@ -84,6 +84,29 @@
     }
 }
 
+.icon-loading-input {
+    width: var(--input-space);
+    right: 0px;
+    position: absolute;
+    
+    svg {
+        width: 15px;
+        height: 15px;
+        margin: auto;
+        display: block;
+        animation: spinner 0.8s linear infinite;
+    }
+}
+
+@keyframes spinner {
+    from {
+        transform: rotate(0);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
 // Close suggest sidebar
 
 .close-suggest-sidebar {

@@ -91,7 +91,7 @@ const FormCreatePostInModal = ({
 
     const inputRef = useRef();
     const imageRef = useRef();
-    const [loadingButton, setLoadingButton] = useState(false);
+    // const [loadingButton, setLoadingButton] = useState(false);
     const [loadingImage, setLoadingImage] = useState(false);
     const [dataImage, setDataImage] = useState(null);
     const [urlImage, setUrlImage] = useState(null);
@@ -252,9 +252,9 @@ const FormCreatePostInModal = ({
                                 "button-create-post"
                             )}
                             onClick={eventSubmitCreatePost}
-                            disabled={loadingButton}
+                            // disabled={loadingButton}
                         >
-                            {loadingButton && <Spinner size="sm" />}
+                            {/* {loadingButton && <Spinner size="sm" />} */}
                             <p className={cx("title-button-upload")}>
                                 Đăng bài
                             </p>

@@ -184,7 +184,7 @@
     }
     .content-title-time-new {
         white-space: nowrap;
-        font-size: 12px;
+        font-size: 14px;
     }
 }
 
@@ -232,6 +232,13 @@
     & ~ .menu-item-delete {
         color: #db342e;
     }   
+}
+
+// Item message null
+
+.sidebar-msg-null {
+    text-align: center;
+    padding: 0px 15px 15px 15px;
 }
 
 // Responsive

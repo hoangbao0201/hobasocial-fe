@@ -8,66 +8,12 @@ import { AuthContext } from "~/context/authContext";
 import ContentMessage from "./ContentMessage";
 import { io } from "socket.io-client";
 import { apiUrl } from "~/context/constant";
+import { MessageContext } from "~/context/message";
+import Spinner from "~/components/Layouts/Spinner";
 
 const cx = classNames.bind(styles);
 
 const socket = io(apiUrl);
-
-const dataListMessages = {
-    member: [123, 234],
-    content: [
-        {
-            text: "Mày ăn cơm chưa?",
-            created: "10 phút trước",
-            sentBy: "123",
-        },
-        {
-            text: "Nãy mới ăn á",
-            created: "10 phút trước",
-            sentBy: "234",
-        },
-        {
-            text: "Ăn ngon không",
-            created: "10 phút trước",
-            sentBy: "123",
-        },
-        {
-            text: "Ngon lắm",
-            created: "10 phút trước",
-            sentBy: "234",
-        },
-        {
-            text: "haha haha haha haha haha haha haha haha haha haha haha haha haha haha haha haha haha haha haha haha ",
-            created: "10 phút trước",
-            sentBy: "234",
-        },
-        {
-            text: "Mày ăn cơm chưa?",
-            created: "10 phút trước",
-            sentBy: "123",
-        },
-        {
-            text: "Nãy mới ăn á",
-            created: "10 phút trước",
-            sentBy: "234",
-        },
-        {
-            text: "Ăn ngon không",
-            created: "10 phút trước",
-            sentBy: "123",
-        },
-        {
-            text: "Ngon lắm",
-            created: "10 phút trước",
-            sentBy: "234",
-        },
-        {
-            text: "haha haha haha haha haha haha haha haha haha haha haha haha haha haha haha haha haha haha haha haha ",
-            created: "10 phút trước",
-            sentBy: "234",
-        },
-    ],
-};
 
 const ContentMessageDefault = () => {
     return (
@@ -93,16 +39,67 @@ function Messenger() {
         state: { authLoading, isAuthenticated, user },
         getAllUser,
     } = useContext(AuthContext);
+    const {
+        state: { msgLoading, allMessages },
+        getAllMsg,
+    } = useContext(MessageContext);
 
     const [dataContentMessage, setDataContentMessage] = useState(null);
+    const [loadingSearchPeople, setLloadingSearchPeople] = useState(false);
 
+    useEffect(() => {
+        eventGetAllMessage();
+    }, []);
+
+    const eventSetLoadingSearch = (isLoading) => {
+        setLloadingSearchPeople(isLoading);
+    }
+
+    const eventGetAllMessage = async () => {
+        const dataServerAllMsg = await getAllMsg();
+    };
+
+    if (msgLoading) {
+        return (
+            <div className={cx("form-msg-loading")}>
+                <img className={cx("logo")} src="/images/logo.png" />
+                <div className={cx("loading")}>
+                    <Spinner size="sm" />
+                </div>
+            </div>
+        );
+    }
+
+    let bodyContentMessage;
+    if (loadingSearchPeople) {
+        bodyContentMessage = (
+            <Spinner size="auto" />
+        );
+    } else {
+        bodyContentMessage = !!dataContentMessage ? (
+            <ContentMessage
+                actionCloseMessage={() => setDataContentMessage(null)}
+                dataContentMessage={dataContentMessage}
+                socket={socket}
+                user={user}
+            />
+        ) : (
+            <ContentMessageDefault />
+        );
+    }
     return (
         <>
             <Header />
             <div className={cx("wrapper")}>
                 <Sidebar
+                    user={user}
                     active={dataContentMessage}
                     action={setDataContentMessage}
+                    msgLoading={msgLoading}
+                    allMessages={allMessages}
+
+                    loadingSearchPeople={loadingSearchPeople}
+                    setLloadingSearchPeople={setLloadingSearchPeople}
                 />
 
                 <div
@@ -111,19 +108,7 @@ function Messenger() {
                         `${!!dataContentMessage ? "checked" : ""}`
                     )}
                 >
-                    {!!dataContentMessage ? (
-                        <ContentMessage
-                            actionCloseMessage={() =>
-                                setDataContentMessage(null)
-                            }
-                            dataContentMessage={dataContentMessage}
-                            dataListMessages={dataListMessages}
-                            socket={socket}
-                            user={user}
-                        />
-                    ) : (
-                        <ContentMessageDefault />
-                    )}
+                    {bodyContentMessage}
                 </div>
             </div>
         </>

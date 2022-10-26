@@ -1,35 +1,48 @@
 import classNames from "classnames/bind";
 import styles from "./ContentMessage.module.scss";
 
+import moment from "moment";
+import "moment/locale/vi";
+
 import { iconArrowLeft } from "~/.public/icon";
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
+import { MessageContext } from "~/context/message";
 
 const cx = classNames.bind(styles);
 
 function ContentMessage({
     actionCloseMessage,
     dataContentMessage,
-    dataListMessages,
     socket,
-    user
+    user,
 }) {
+    const { sendMessage } = useContext(MessageContext);
 
     const inputRef = useRef();
     const [valueInputSendMsg, setValueInputSendMsg] = useState("");
 
-    const userId = "123";
+    // console.log(dataContentMessage)
+
     // Send message
-    const eventSendMsg = () => {
-        if(valueInputSendMsg === "") {
+    const eventSendMsg = async () => {
+        if (valueInputSendMsg === "") {
             return;
         }
+
+        const dataServerSendMessage = await sendMessage({
+            messageId: dataContentMessage._id,
+            receiveId: [dataContentMessage.member[0]._id],
+            text: valueInputSendMsg,
+            image: null,
+        });
+
+        console.log(dataServerSendMessage);
 
         // socket.emit("send_msg", {
         //     senderId: user._id,
         //     receiverId: receiverId,
         //     text: valueInputSendMsg,
         // });
-
 
         setValueInputSendMsg("");
         inputRef.current.focus();
@@ -52,30 +65,35 @@ function ContentMessage({
                     </i>
                     <img
                         className={cx("avatar-others")}
-                        src="https://s120-ava-talk.zadn.vn/e/d/e/4/1/120/9759d738572412317209f29511d43f57.jpg"
+                        src={
+                            dataContentMessage.member[0].avatar.url ||
+                            "images/avatar-default.png"
+                        }
                     ></img>
                     <span className={cx("grid-info-name")}>
-                        {dataContentMessage.name}
+                        {dataContentMessage.member[0].name}
                     </span>
                 </div>
             </div>
             <div className={cx("list-messages", "dev-scroll")}>
-                {dataListMessages.content.map((item, index) => {
+                {dataContentMessage.content.map((item, index) => {
                     return (
                         <div key={index} className={cx("grid-message-row")}>
                             <div
                                 className={cx(
                                     "messages-item",
-                                    `${item.sentBy === userId ? "youSent" : ""}`
+                                    `${
+                                        item.sendBy === user._id
+                                            ? "youSent"
+                                            : ""
+                                    }`
                                 )}
                             >
-                                <div
-                                    className={cx("messages-item-msg")}
-                                >
+                                <div className={cx("messages-item-msg")}>
                                     {item.text}
                                 </div>
                                 <div className={cx("messages-item-time")}>
-                                    {item.created}
+                                    {moment(item.created).fromNow()}
                                 </div>
                             </div>
                         </div>

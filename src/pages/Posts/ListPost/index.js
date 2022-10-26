@@ -48,6 +48,7 @@ function ListPost({ user, posts, setPosts, getAllPosts, getNewPosts }) {
                         {posts.map((post, index) => (
                             <CardPost
                                 key={post._id}
+                                // key={index}
                                 user={user}
                                 post={post}
                                 likePost={likePost}

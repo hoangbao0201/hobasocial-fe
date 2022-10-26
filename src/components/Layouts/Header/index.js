@@ -91,7 +91,8 @@ function Header() {
             >
                 <div className={cx("container")}>
                     <a href="/">
-                        <div className={cx("logo")}>Logo</div>
+                        {/* <div className={cx("logo")}>Logo</div> */}
+                        <img className={cx("logo")} src="/images/logo.png" alt="logo"/>
                     </a>
                     {body}
                 </div>

@@ -6,6 +6,7 @@ import reportWebVitals from "./reportWebVitals";
 import GlobalStyles from "./components/GlobalStyles";
 import AuthContextProvider from "./context/authContext";
 import PostContextProvider from "./context/postContext";
+import MessageProvider from "./context/message";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -13,7 +14,9 @@ root.render(
         <GlobalStyles>
             <AuthContextProvider>
                 <PostContextProvider>
-                    <App />
+                    <MessageProvider>
+                        <App />
+                    </MessageProvider>
                 </PostContextProvider>
             </AuthContextProvider>
         </GlobalStyles>

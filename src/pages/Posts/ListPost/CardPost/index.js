@@ -31,7 +31,7 @@ function CardPost({ user, post, likePost, unlikePost, deletePost }) {
     const [isDelete, setIsDelete] = useState(false);
     const [countLikes, setCountLikes] = useState(post.likes.length);
 
-    const [timeNow, setTimeNow] = useState(null)
+    const [timeNow, setTimeNow] = useState(null);
     const [currentPost, setCurrentPost] = useState(post);
 
     // Event show, hiddent modal
@@ -115,7 +115,7 @@ function CardPost({ user, post, likePost, unlikePost, deletePost }) {
                 <FormUpdatePost
                     user={user}
                     post={currentPost}
-                    setPost={setCurrentPost}
+                    setCurrentPost={setCurrentPost}
                     actionQuit={eventHiddenModal}
                     setLoadingFormPost={setLoadingFormPost}
                 />
@@ -163,7 +163,7 @@ function CardPost({ user, post, likePost, unlikePost, deletePost }) {
                         </Tippy>
                     )}
                 </div>
-                {post.content.length > 0 && (
+                {currentPost.content.length > 0 && (
                     <div
                         className={cx("content-text-post")}
                         dangerouslySetInnerHTML={{

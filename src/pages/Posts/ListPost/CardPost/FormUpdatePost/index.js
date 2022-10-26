@@ -16,9 +16,9 @@ const cx = classNames.bind(styles);
 function FormUpdatePost({
     user,
     post,
-    setPost,
+    setCurrentPost,
     actionQuit,
-    setLoadingFormPost
+    setLoadingFormPost,
 }) {
     const { editPost, uploadSingleImage } = useContext(PostContext);
 
@@ -102,9 +102,8 @@ function FormUpdatePost({
         setLoadingFormPost(true);
         actionQuit(false);
 
-        if(dataServerInfo.success) {
-            setPost(dataServerInfo.postNew);
-        }
+        // console.log(dataServerInfo.post)
+        setCurrentPost(dataServerInfo.post);
 
         setLoadingFormPost(false);
     };

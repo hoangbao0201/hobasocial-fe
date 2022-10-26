@@ -7,11 +7,12 @@
 /* font size default */
 .ql-editor {
     color: #050505 !important;
-    font-size: 24px !important;
+    font-size: 18px !important;
 }
 
 /* font style placehoder */
 .ql-editor.ql-blank::before {
+    font-size: 18px;
     font-style: initial !important;
 }
 

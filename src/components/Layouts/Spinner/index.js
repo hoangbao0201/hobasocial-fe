@@ -4,14 +4,18 @@ import styles from "./Spinner.module.scss";
 const cx = classNames.bind(styles);
 
 function Spinner({ size, modal, text }) {
-
     let classed = ["size-lg"];
     if (size) {
         classed = [`size-${size}`];
     }
 
     return (
-        <div className={cx(`${modal ? "modal" : ""}`)}>
+        <div
+            className={cx(
+                `${modal ? "modal" : ""}`,
+                `${size === "auto" ? "auto" : ""}`
+            )}
+        >
             <svg
                 className={cx("spinner", ...classed)}
                 viewBox="0 0 100 101"

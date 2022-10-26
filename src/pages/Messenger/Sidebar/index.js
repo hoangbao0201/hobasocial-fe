@@ -8,13 +8,18 @@ import Tippy from "@tippyjs/react";
 import "tippy.js/dist/tippy.css";
 import "tippy.js/themes/light.css";
 
+import moment from "moment";
+import "moment/locale/vi";
+
 import { AuthContext } from "~/context/authContext";
 import useDebounce from "~/hooks/useDebounce";
 import SuggestSearchUserMsg from "./SuggestSearchUserMsg";
+import Spinner from "~/components/Layouts/Spinner";
+import { MessageContext } from "~/context/message";
 
 const cx = classNames.bind(styles);
 
-const ItemMessage = ({ data, active, action }) => {
+const ItemMessage = ({user, data, active, action }) => {
     return (
         <div
             className={cx(
@@ -24,21 +29,35 @@ const ItemMessage = ({ data, active, action }) => {
             )}
         >
             <div className={cx("item__grid-image")} onClick={action}>
-                <img
-                    className={cx("avatar-user")}
-                    src="/images/avatar-default.png"
-                    alt="avatar_message"
-                />
+                {data.member.map((people) => {
+                    if (people._id === user._id) {
+                        return;
+                    }
+
+                    return (
+                        <img
+                            key={people._id}
+                            className={cx("avatar-user")}
+                            src={people.avatar.url || "images/avatar-default.png"}
+                            alt="avatar_message"
+                        />
+                    );
+                })}
             </div>
             <div className={cx("item__grid-content")} onClick={action}>
                 <div className={cx("item__content-title")}>
                     <span className={cx("content-title-text")}>
-                        {data.name || "Không tìm thấy"}
+                        {data.member[0].name || "Không tìm thấy"}
                     </span>
-                    <span className={cx("content-title-time-new")}>3 giờ</span>
+                    <span className={cx("content-title-time-new")}>
+                        {moment(
+                            data.content[data.content.length - 1].created
+                        ).fromNow()}
+                    </span>
                 </div>
                 <div className={cx("item__content-message")}>
-                    {data.description || "Không tìm thấy thông tin"}
+                    {data.content[data.content.length - 1].text ||
+                        "Không tìm thấy thông tin"}
                 </div>
             </div>
             <div className={cx("item__grid-side-action")}>
@@ -83,78 +102,21 @@ const ItemMessage = ({ data, active, action }) => {
     );
 };
 
-// Initial value
-const listItemMsg = [
-    {
-        name: "Nguyễn Hoàng Bảo",
-        description: "Hôm qua mày có đi học không Hôm qua mày có đi học không",
-    },
-    {
-        name: "Nguyễn Hoàng Vũ",
-        description: "Hôm qua mày có đi học không Hôm qua mày có đi học không",
-    },
-    {
-        name: "Nguyễn Thị Hiền Ngân",
-        description: "Hôm qua mày có đi học không Hôm qua mày có đi học không",
-    },
-    {
-        name: "Lê Thị Út Ngân",
-        description: "Hôm qua mày có đi học không Hôm qua mày có đi học không",
-    },
-    {
-        name: "Nguyễn Tấn Nhật",
-        description: "Hôm qua mày có đi học không Hôm qua mày có đi học không",
-    },
-    {
-        name: "Ngô Anh Tuấn",
-        description: "Hôm qua mày có đi học không Hôm qua mày có đi học không",
-    },
-    {
-        name: "Nguyễn Nhật Nam",
-        description: "Hôm qua mày có đi học không Hôm qua mày có đi học không",
-    },
-    {
-        name: "Sơn Tùng MT-P",
-        description: "Hôm qua mày có đi học không Hôm qua mày có đi học không",
-    },
-    {
-        name: "Nguyễn Hoàng Bảo",
-        description: "Hôm qua mày có đi học không Hôm qua mày có đi học không",
-    },
-    {
-        name: "Nguyễn Hoàng Vũ",
-        description: "Hôm qua mày có đi học không Hôm qua mày có đi học không",
-    },
-    {
-        name: "Nguyễn Thị Hiền Ngân",
-        description: "Hôm qua mày có đi học không Hôm qua mày có đi học không",
-    },
-    {
-        name: "Lê Thị Út Ngân",
-        description: "Hôm qua mày có đi học không Hôm qua mày có đi học không",
-    },
-    {
-        name: "Nguyễn Tấn Nhật",
-        description: "Hôm qua mày có đi học không Hôm qua mày có đi học không",
-    },
-    {
-        name: "Ngô Anh Tuấn",
-        description: "Hôm qua mày có đi học không Hôm qua mày có đi học không",
-    },
-    {
-        name: "Nguyễn Nhật Nam",
-        description: "Hôm qua mày có đi học không Hôm qua mày có đi học không",
-    },
-    {
-        name: "Sơn Tùng MT-P",
-        description: "Hôm qua mày có đi học không Hôm qua mày có đi học không",
-    },
-];
-const allUser = [];
-
-function Sidebar({ active, action }) {
+function Sidebar({
+    user,
+    active,
+    action,
+    msgLoading,
+    allMessages,
+    loadingSearchPeople,
+    setLloadingSearchPeople,
+}) {
     // usecontext
     const { searchUser } = useContext(AuthContext);
+    const {
+        state: { searchPeopleMesage },
+        userMessage,
+    } = useContext(MessageContext);
 
     const [focusInputSearch, setFocusInputSearch] = useState(false);
     const [resultListUserSearch, setResultListUserSearch] = useState([]);
@@ -196,39 +158,67 @@ function Sidebar({ active, action }) {
     };
 
     // Active item message
-    const eventActiveItemMessage = (data) => {
-        action(data);
+    const eventActiveItemMessage = async (data) => {
+        if (data.content) {
+            action(data);
+        } else {
+            setLloadingSearchPeople(true);
+            const dataServerContentMsg = await userMessage(data._id);
+            setLloadingSearchPeople(false);
+
+            if (dataServerContentMsg.messages[0]) {
+                action(dataServerContentMsg.messages[0]);
+            } else {
+                action({
+                    messageId: null,
+                    content: [],
+                    member: [data],
+                    _id: null,
+                });
+            }
+        }
     };
 
     // Close suggest search
     const eventCloseSuggestSearch = () => {
         setFocusInputSearch(false);
         setValueInputSearch("");
-    }
+    };
 
     let contentSidebar;
     if (!focusInputSearch) {
-        contentSidebar = (
-            <>
-                {listItemMsg.map((item, index) => {
-                    return (
-                        <ItemMessage
-                            key={index}
-                            data={item}
-                            active={item === active ? "active" : ""}
-                            action={() => eventActiveItemMessage(item)}
-                        />
-                    );
-                })}
-            </>
-        );
+        if (allMessages.length === 0) {
+            contentSidebar = (
+                <>
+                    <div className={cx("sidebar-msg-null")}>
+                        Không có tin nhắn nào !
+                    </div>
+                </>
+            );
+        } else {
+            contentSidebar = (
+                <>
+                    {allMessages.map((item) => {
+                        return (
+                            <ItemMessage
+                                user={user}
+                                key={item._id}
+                                data={item}
+                                active={item === active ? "active" : ""}
+                                action={() => eventActiveItemMessage(item)}
+                            />
+                        );
+                    })}
+                </>
+            );
+        }
     } else {
         contentSidebar = (
             <>
                 <SuggestSearchUserMsg
                     data={resultListUserSearch}
-                    active={active}
-                    action={eventActiveItemMessage}
+                    isActive={active}
+                    eventActiveItemMessage={eventActiveItemMessage}
                 />
             </>
         );

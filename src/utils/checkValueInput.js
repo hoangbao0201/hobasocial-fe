@@ -149,12 +149,17 @@ export const checkDataUpdateUser = (data) => {
     if (!data.oldPassword) {
         arrayListWarning.push("oldPassword");
     }
-    if (!data.newPassword) {
-        arrayListWarning.push("newPassword");
+
+    if (!data.newPassword && !data.reNewPassword) {
+    } else {
+        if (!data.newPassword) {
+            arrayListWarning.push("newPassword");
+        }
+        if (!data.reNewPassword) {
+            arrayListWarning.push("reNewPassword");
+        }
     }
-    if (!data.reNewPassword) {
-        arrayListWarning.push("reNewPassword");
-    }
+
     if (arrayListWarning.length > 0) {
         return {
             success: false,
@@ -193,26 +198,29 @@ export const checkDataUpdateUser = (data) => {
         };
     }
     // Check password
-    if (data.newPassword.length < 3) {
-        return {
-            success: false,
-            warningField: ["newPassword"],
-            msg: "Mật khẩu mới quá ngắn",
-        };
-    }
-    if (data.newPassword.length > 20) {
-        return {
-            success: false,
-            warningField: ["newPassword"],
-            msg: "Mật khẩu mới quá dài",
-        };
-    }
-    if (data.newPassword !== data.reNewPassword) {
-        return {
-            success: false,
-            warningField: ["newPassword", "reNewPassword"],
-            msg: "Mật khẩu mới không giống nhau",
-        };
+    if (!data.newPassword && !data.reNewPassword) {
+    } else {
+        if (data.newPassword.length < 3) {
+            return {
+                success: false,
+                warningField: ["newPassword"],
+                msg: "Mật khẩu mới quá ngắn",
+            };
+        }
+        if (data.newPassword.length > 20) {
+            return {
+                success: false,
+                warningField: ["newPassword"],
+                msg: "Mật khẩu mới quá dài",
+            };
+        }
+        if (data.newPassword !== data.reNewPassword) {
+            return {
+                success: false,
+                warningField: ["newPassword", "reNewPassword"],
+                msg: "Mật khẩu mới không giống nhau",
+            };
+        }
     }
 
     return {

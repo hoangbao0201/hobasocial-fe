@@ -97,7 +97,7 @@ function FormImage({ user }) {
                     {loading ? <Spinner size="sm" /> : "Upload avatar"}
                 </button>
             </div>
-            <div className={cx("title-name")}>Nguyễn Hoàng Bảo</div>
+            <div className={cx("title-name")}>{user.name}</div>
         </div>
     );
 }

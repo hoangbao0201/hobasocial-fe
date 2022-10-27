@@ -96,6 +96,8 @@ function FormInformation() {
         setLoading(false);
     };
 
+    console.log(!!warning)
+
     return (
         <>
             
@@ -296,6 +298,7 @@ function FormInformation() {
                     <button
                         className={cx("dev-button-auto", "button-update")}
                         onClick={eventSubmitForm}
+                        disabled={!!warning}
                     >
                         Update thông tin
                     </button>

@@ -4,7 +4,7 @@ import styles from "./ContentMessage.module.scss";
 import moment from "moment";
 import "moment/locale/vi";
 
-import { iconArrowLeft } from "~/.public/icon";
+import { iconArrowLeft, iconCheck } from "~/.public/icon";
 import { useContext, useEffect, useRef, useState } from "react";
 import { MessageContext } from "~/context/message";
 
@@ -13,6 +13,7 @@ const cx = classNames.bind(styles);
 function ContentMessage({
     actionCloseMessage,
     dataContentMessage,
+    setDataContentMessage,
     socket,
     user,
 }) {
@@ -28,15 +29,25 @@ function ContentMessage({
         if (valueInputSendMsg === "") {
             return;
         }
+        if (dataContentMessage._id === dataContentMessage.members[0]._id) {
+            return;
+        }
 
         const dataServerSendMessage = await sendMessage({
             messageId: dataContentMessage._id,
-            receiveId: [dataContentMessage.member[0]._id],
+            receiveId: [dataContentMessage.members[0]._id],
             text: valueInputSendMsg,
             image: null,
         });
 
-        console.log(dataServerSendMessage);
+        setDataContentMessage((value) => {
+            return {
+                ...value,
+                ...dataServerSendMessage.message,
+            };
+        });
+
+        // console.log(dataServerSendMessage.message)
 
         // socket.emit("send_msg", {
         //     senderId: user._id,
@@ -47,6 +58,8 @@ function ContentMessage({
         setValueInputSendMsg("");
         inputRef.current.focus();
     };
+
+    // console.log(dataContentMessage)
 
     // Onchange input
     const eventOnchangeInput = (e) => {
@@ -66,12 +79,12 @@ function ContentMessage({
                     <img
                         className={cx("avatar-others")}
                         src={
-                            dataContentMessage.member[0].avatar.url ||
+                            dataContentMessage.members[0]?.avatar.url ||
                             "images/avatar-default.png"
                         }
                     ></img>
                     <span className={cx("grid-info-name")}>
-                        {dataContentMessage.member[0].name}
+                        {dataContentMessage.members[0].name}
                     </span>
                 </div>
             </div>
@@ -96,6 +109,8 @@ function ContentMessage({
                                     {moment(item.created).fromNow()}
                                 </div>
                             </div>
+
+                            {item.sendBy === user._id && <i className={cx("check-send-successfully")}>{iconCheck}</i>}
                         </div>
                     );
                 })}

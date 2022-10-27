@@ -25,6 +25,17 @@ import { MessageContext } from "~/context/message";
 const cx = classNames.bind(styles);
 
 const ItemMessage = ({ user, data, active, action }) => {
+
+    // Delete post
+    const eventDeleteMessage = async () => {
+        if (window.confirm("Bạn có thật sự muốn xóa?")) {
+
+            // const dataServer = await deletePost(post._id);
+            // if (dataServer.success) {
+            // }
+        }
+    };
+
     return (
         <div
             className={cx(
@@ -34,7 +45,7 @@ const ItemMessage = ({ user, data, active, action }) => {
             )}
         >
             <div className={cx("item__grid-image")} onClick={action}>
-                {data.member.map((people) => {
+                {data.members.map((people) => {
                     if (people._id === user._id) {
                         return;
                     }
@@ -54,7 +65,7 @@ const ItemMessage = ({ user, data, active, action }) => {
             <div className={cx("item__grid-content")} onClick={action}>
                 <div className={cx("item__content-title")}>
                     <span className={cx("content-title-text")}>
-                        {data.member[0].name || "Không tìm thấy"}
+                        {data.members[0].name || "Không tìm thấy"}
                     </span>
                     <span className={cx("content-title-time-new")}>
                         {moment(
@@ -89,6 +100,7 @@ const ItemMessage = ({ user, data, active, action }) => {
                                     "action-more-menu-item",
                                     "menu-item-delete"
                                 )}
+                                onClick={eventDeleteMessage}
                             >
                                 Xóa hội thoại
                             </div>
@@ -183,7 +195,7 @@ function Sidebar({
                 action({
                     messageId: null,
                     content: [],
-                    member: [data],
+                    members: [data],
                     _id: null,
                 });
             }

@@ -8,7 +8,8 @@
         width: 100%;
         height: var(--content-header-height);
         padding: 0px 15px;
-        border-bottom: 1px solid #eeee;
+        background-color: #fff;
+        border-bottom: 1px solid #ccc;
 
         display: flex;
         align-items: center;
@@ -45,6 +46,9 @@
     display: flex;
     margin-bottom: 15px;
 
+    position: relative;
+    align-items: flex-end;
+
     .messages-item {
         max-width: 45%;
         padding: 15px;
@@ -66,6 +70,23 @@
         }
         .messages-item-time {
             font-size: 13px;
+        }
+    }
+    .check-send-successfully {
+        width: 15px;
+        height: 15px;
+        border-radius: 50%;
+        border: 1px solid #bcc0c4;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        margin-left: 8px;
+
+        svg {
+            fill: #bcc0c4;
+            width: 80%;
         }
     }
 }

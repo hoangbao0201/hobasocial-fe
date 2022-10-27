@@ -80,6 +80,7 @@ function Messenger() {
             <ContentMessage
                 actionCloseMessage={() => setDataContentMessage(null)}
                 dataContentMessage={dataContentMessage}
+                setDataContentMessage={setDataContentMessage}
                 socket={socket}
                 user={user}
             />

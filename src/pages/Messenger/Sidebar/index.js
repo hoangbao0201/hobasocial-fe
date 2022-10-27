@@ -25,11 +25,9 @@ import { MessageContext } from "~/context/message";
 const cx = classNames.bind(styles);
 
 const ItemMessage = ({ user, data, active, action }) => {
-
     // Delete post
     const eventDeleteMessage = async () => {
         if (window.confirm("Bạn có thật sự muốn xóa?")) {
-
             // const dataServer = await deletePost(post._id);
             // if (dataServer.success) {
             // }
@@ -64,9 +62,23 @@ const ItemMessage = ({ user, data, active, action }) => {
             </div>
             <div className={cx("item__grid-content")} onClick={action}>
                 <div className={cx("item__content-title")}>
-                    <span className={cx("content-title-text")}>
-                        {data.members[0].name || "Không tìm thấy"}
-                    </span>
+                    {
+                        data.members.map((people) => {
+                            if (people._id === user._id) {
+                                return;
+                            }
+    
+                            return (
+                                <span
+                                    className={cx("content-title-text")}
+                                    key={people._id}
+                                >
+                                    {people.name}
+                                </span>
+                            );
+                        }) || "Người dùng Hoba"
+                    }
+
                     <span className={cx("content-title-time-new")}>
                         {moment(
                             data.content[data.content.length - 1].created
@@ -193,7 +205,7 @@ function Sidebar({
                 action(dataServerContentMsg.messages[0]);
             } else {
                 action({
-                    messageId: null,
+                    messagesId: null,
                     content: [],
                     members: [data],
                     _id: null,

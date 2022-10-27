@@ -20,6 +20,7 @@ function ContentMessage({
     const { sendMessage } = useContext(MessageContext);
 
     const inputRef = useRef();
+    const scrollRef = useRef();
     const [valueInputSendMsg, setValueInputSendMsg] = useState("");
 
     // console.log(dataContentMessage)
@@ -34,7 +35,7 @@ function ContentMessage({
         }
 
         const dataServerSendMessage = await sendMessage({
-            messageId: dataContentMessage._id,
+            messagesId: dataContentMessage._id,
             receiveId: [dataContentMessage.members[0]._id],
             text: valueInputSendMsg,
             image: null,
@@ -43,17 +44,11 @@ function ContentMessage({
         setDataContentMessage((value) => {
             return {
                 ...value,
-                ...dataServerSendMessage.message,
+                ...dataServerSendMessage.messages,
             };
         });
 
-        // console.log(dataServerSendMessage.message)
-
-        // socket.emit("send_msg", {
-        //     senderId: user._id,
-        //     receiverId: receiverId,
-        //     text: valueInputSendMsg,
-        // });
+        socket.emit("new-message", dataServerSendMessage.messages);
 
         setValueInputSendMsg("");
         inputRef.current.focus();
@@ -66,6 +61,13 @@ function ContentMessage({
         setValueInputSendMsg(e.target.value);
     };
 
+    // auto scroll bottom
+    useEffect(() => {
+        scrollRef.current?.scrollIntoView({
+            // behavior: "smooth",
+        });
+    }, [dataContentMessage]);
+
     return (
         <div className={cx("content-message")}>
             <div className={cx("content-header")}>
@@ -76,22 +78,53 @@ function ContentMessage({
                     >
                         {iconArrowLeft}
                     </i>
-                    <img
+                    {/* <img
                         className={cx("avatar-others")}
                         src={
                             dataContentMessage.members[0]?.avatar.url ||
                             "images/avatar-default.png"
                         }
-                    ></img>
+                    ></img> */}
+
+                    {dataContentMessage.members.map((people) => {
+                        if (people._id === user._id) {
+                            return;
+                        }
+
+                        return (
+                            <img
+                                key={people._id}
+                                className={cx("avatar-others")}
+                                src={
+                                    people.avatar.url ||
+                                    "images/avatar-default.png"
+                                }
+                                alt="avatar_message"
+                            />
+                        );
+                    })}
+
                     <span className={cx("grid-info-name")}>
-                        {dataContentMessage.members[0].name}
+                        {/* {dataContentMessage.members[0].name} */}
+
+                        {dataContentMessage.members.map((people) => {
+                            if (people._id === user._id) {
+                                return;
+                            }
+
+                            return <div key={people._id}>{people.name}</div>;
+                        })}
                     </span>
                 </div>
             </div>
             <div className={cx("list-messages", "dev-scroll")}>
-                {dataContentMessage.content.map((item, index) => {
+                {dataContentMessage.content.map((item) => {
                     return (
-                        <div key={index} className={cx("grid-message-row")}>
+                        <div
+                            ref={scrollRef}
+                            key={item._id}
+                            className={cx("grid-message-row")}
+                        >
                             <div
                                 className={cx(
                                     "messages-item",
@@ -110,7 +143,11 @@ function ContentMessage({
                                 </div>
                             </div>
 
-                            {item.sendBy === user._id && <i className={cx("check-send-successfully")}>{iconCheck}</i>}
+                            {item.sendBy === user._id && (
+                                <i className={cx("check-send-successfully")}>
+                                    {iconCheck}
+                                </i>
+                            )}
                         </div>
                     );
                 })}

@@ -42,6 +42,7 @@ function Messenger() {
     const {
         state: { msgLoading, allMessages },
         getAllMsg,
+        changeAllMessages
     } = useContext(MessageContext);
 
     const [dataContentMessage, setDataContentMessage] = useState(null);
@@ -58,6 +59,26 @@ function Messenger() {
     const eventGetAllMessage = async () => {
         const dataServerAllMsg = await getAllMsg();
     };
+
+    
+
+    useEffect(() => {
+        if(allMessages) {
+            socket.on("new-message", (newMessage) => {
+                const userId = user._id;
+                const checkMsg = newMessage.members.find((value) => value._id === userId);
+                if(!!checkMsg) {
+                    changeAllMessages(newMessage);
+                }
+
+                setDataContentMessage(newMessage);
+            })
+        }
+
+        return () => {
+            socket.off("new-message");
+        };
+    }, [])
 
     if (msgLoading) {
         return (

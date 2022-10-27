@@ -36,6 +36,11 @@ const reducer = (state, action) => {
                 searchPeopleMesage: action.payload.messages,
                 loadingSearchPeople: false
             }
+        case "CHANGE_ALL_MESSAGES":
+            return {
+                ...state,
+                allMessages: action.payload
+            }
     
         default:
             return state;
@@ -112,11 +117,20 @@ const MessageProvider = ({ children }) => {
         }
     };
 
+    const changeAllMessages = async (data) => {
+        // console.log();
+        dispatch({
+            type: "CHANGE_ALL_MESSAGES",
+            payload: [...state.allMessages, data]
+        })
+    }
+
     const dataMessageContext = {
         state,
         getAllMsg,
         userMessage,
         sendMessage,
+        changeAllMessages
     };
     return (
         <MessageContext.Provider value={dataMessageContext}>

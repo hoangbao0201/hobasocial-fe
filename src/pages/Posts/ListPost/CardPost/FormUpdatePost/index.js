@@ -15,7 +15,7 @@ const cx = classNames.bind(styles);
 
 function FormUpdatePost({
     user,
-    post,
+    currentPost,
     setCurrentPost,
     actionQuit,
     setLoadingFormPost,
@@ -26,8 +26,10 @@ function FormUpdatePost({
     const [dataImage, setDataImage] = useState(null);
     const [loadingImage, setLoadingImage] = useState(false);
     const [loadingButton, setLoadingButton] = useState(false);
-    const [urlImage, setUrlImage] = useState(post.image.url);
-    const [textValue, setTextValue] = useState(post.content);
+    const [urlImage, setUrlImage] = useState(currentPost.image.url);
+    const [textValue, setTextValue] = useState(currentPost.content);
+
+    console.log("currentPost: ", currentPost);
 
     const eventOnchangeImagePost = async (e) => {
         setLoadingImage(true);
@@ -63,8 +65,8 @@ function FormUpdatePost({
 
         // Request upload image post
         let image = {
-            url: post.image.url,
-            public_id: post.image.public_id,
+            url: currentPost.image.url,
+            public_id: currentPost.image.public_id,
         };
         if (!!dataImage && urlImage != image.url) {
             const formData = new FormData();
@@ -86,7 +88,7 @@ function FormUpdatePost({
         }
 
         // Request upload info and image post
-        const postId = post._id;
+        const postId = currentPost._id;
         const dataServerInfo = await editPost(
             {
                 content: textValue,
@@ -104,6 +106,8 @@ function FormUpdatePost({
 
         // console.log(dataServerInfo.post)
         setCurrentPost(dataServerInfo.post);
+
+        console.log("dataServerInfo.post ", dataServerInfo.post)
 
         setLoadingFormPost(false);
     };

@@ -17,56 +17,137 @@ function ContentMessage({
     socket,
     user,
 }) {
-    const { sendMessage } = useContext(MessageContext);
+    const { state: { allMessages }, sendMessage, changeAllMessages } = useContext(MessageContext);
 
     const inputRef = useRef();
     const scrollRef = useRef();
     const [valueInputSendMsg, setValueInputSendMsg] = useState("");
 
-    // console.log(dataContentMessage)
+    // Send message
+    // const eventSendMsg = async () => {
+
+    //     if (valueInputSendMsg === "") {
+    //         return;
+    //     }
+    //     if (dataContentMessage._id === dataContentMessage.members[0]._id) {
+    //         return;
+    //     }
+
+    //     const dataServerSendMessage = await sendMessage({
+    //         messagesId: dataContentMessage._id,
+    //         receiveId: [dataContentMessage.members[0]._id],
+    //         text: valueInputSendMsg,
+    //         image: null,
+    //     });
+
+    //     setDataContentMessage((value) => {
+    //         return {
+    //             ...value,
+    //             ...dataServerSendMessage.messages,
+    //         };
+    //     });
+
+    //     let change = false;
+    //     let newData = allMessages.filter((d) => {
+    //         if(d._id === dataServerSendMessage.messages._id) {
+    //             d.content = dataServerSendMessage.messages.content;
+    //             d.updateAt = dataServerSendMessage.messages.updateAt;
+    //             change = true;
+    //         }
+
+    //         return d;
+    //     })
+    //     changeAllMessages(change ? newData : [dataServerSendMessage.messages, ...allMessages]);
+
+    //     socket.emit("new-message", dataServerSendMessage.messages);
+
+    //     setValueInputSendMsg("");
+    //     inputRef.current.focus();
+    // };
+    
 
     // Send message
     const eventSendMsg = async () => {
-        if (valueInputSendMsg === "") {
+        let textMsg = valueInputSendMsg;
+        if(textMsg === "") {
             return;
         }
-        if (dataContentMessage._id === dataContentMessage.members[0]._id) {
-            return;
+        // if (dataContentMessage._id === dataContentMessage.members[0]._id) {
+        //     return;
+        // }
+
+        const receiveId = dataContentMessage.members.flatMap((people) => {
+            return people._id === user._id ? [] : people._id;
+        }, [])
+
+        const indexContentMessage = dataContentMessage.content.length;
+        let dataMsg = {
+            text: textMsg,
+            sendBy: user._id,
+            _id: `fakeId-${Math.random()}-${new Date()}`,
+            created: new Date(),
+            newMsg: false,
         }
-
-        const dataServerSendMessage = await sendMessage({
-            messagesId: dataContentMessage._id,
-            receiveId: [dataContentMessage.members[0]._id],
-            text: valueInputSendMsg,
-            image: null,
-        });
-
         setDataContentMessage((value) => {
             return {
                 ...value,
-                ...dataServerSendMessage.messages,
-            };
-        });
-
-        socket.emit("new-message", dataServerSendMessage.messages);
-
+                content: [...value.content, dataMsg],
+            }
+        })
         setValueInputSendMsg("");
         inputRef.current.focus();
-    };
 
-    // console.log(dataContentMessage)
+        // Send message up server
+        const dataServerSendMessage = await sendMessage({
+            messagesId: dataContentMessage._id,
+            receiveId: receiveId,
+            text: textMsg,
+            image: null,
+        })
 
-    // Onchange input
+        // Customize dataContentMessage
+        // dataMsg.check = true;
+        // dataMsg._id = dataServerSendMessage.messages.content[indexContentMessage]._id;
+        // let contentMessages = [
+        //     ...dataContentMessage.content, dataMsg
+        // ]
+
+        // setDataContentMessage((value) => {
+        //     return {
+        //         ...value,
+        //         content: contentMessages
+        //     }
+        // })
+
+        setDataContentMessage(dataServerSendMessage.messages)
+
+        // Customize allMessages
+        let newData = allMessages.filter((d) => {
+            if (d._id === dataServerSendMessage.messages._id) {
+                d.content = dataServerSendMessage.messages.content;
+                d.updatedAt = dataServerSendMessage.messages.updatedAt;
+            }
+            return d;
+        });
+        changeAllMessages(newData);
+
+        // Socket
+        socket.current.emit("send-message", dataServerSendMessage.messages);
+    }
+
+    // // Onchange input
     const eventOnchangeInput = (e) => {
         setValueInputSendMsg(e.target.value);
     };
 
-    // auto scroll bottom
+    // console.log(dataContentMessage)
+
+    // // auto scroll bottom
     useEffect(() => {
-        scrollRef.current?.scrollIntoView({
-            // behavior: "smooth",
-        });
-    }, [dataContentMessage]);
+        scrollRef.current?.scrollIntoView();
+    }, [dataContentMessage, allMessages]);
+
+    console.log(dataContentMessage)
 
     return (
         <div className={cx("content-message")}>
@@ -78,14 +159,6 @@ function ContentMessage({
                     >
                         {iconArrowLeft}
                     </i>
-                    {/* <img
-                        className={cx("avatar-others")}
-                        src={
-                            dataContentMessage.members[0]?.avatar.url ||
-                            "images/avatar-default.png"
-                        }
-                    ></img> */}
-
                     {dataContentMessage.members.map((people) => {
                         if (people._id === user._id) {
                             return;
@@ -105,8 +178,6 @@ function ContentMessage({
                     })}
 
                     <span className={cx("grid-info-name")}>
-                        {/* {dataContentMessage.members[0].name} */}
-
                         {dataContentMessage.members.map((people) => {
                             if (people._id === user._id) {
                                 return;
@@ -145,7 +216,7 @@ function ContentMessage({
 
                             {item.sendBy === user._id && (
                                 <i className={cx("check-send-successfully")}>
-                                    {iconCheck}
+                                    {item._id.includes('fakeId') ? "" : iconCheck} 
                                 </i>
                             )}
                         </div>

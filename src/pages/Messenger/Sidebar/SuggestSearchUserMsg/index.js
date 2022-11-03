@@ -4,14 +4,16 @@ import { MessageContext } from "~/context/message";
 import styles from "./SuggestSearchUserMsg.module.scss";
 
 const cx = classNames.bind(styles);
-const initialImage =
-    "https://res.cloudinary.com/dcwekkkez/image/upload/v1656135268/oaf2aq4uxyat9d66ih3r.jpg";
 
-function SuggestSearchUserMsg({ data, isActive, eventActiveItemMessage }) {
+function SuggestSearchUserMsg({user, data, isActive, eventActiveItemMessage }) {
+    const userId = user._id;
     return (
         <div className={cx("content")}>
             <div className={cx("title-search")}>Kết quả tìm kiếm</div>
-            {data.map((user) => {
+            {data.map((user, index) => {
+                if(user._id === userId) {
+                    return <div key={index}></div>
+                }
                 return (
                     <div
                         className={cx(

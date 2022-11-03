@@ -114,7 +114,7 @@ function CardPost({ user, post, likePost, unlikePost, deletePost }) {
             >
                 <FormUpdatePost
                     user={user}
-                    post={currentPost}
+                    currentPost={currentPost}
                     setCurrentPost={setCurrentPost}
                     actionQuit={eventHiddenModal}
                     setLoadingFormPost={setLoadingFormPost}

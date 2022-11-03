@@ -12,7 +12,8 @@ const initState = {
             url: "",
         },
     },
-    allMessages: [],
+    allMessages: null,
+    dataContentMessages: null,
     msgLoading: true,
     
     searchPeopleMesage: [],
@@ -40,6 +41,11 @@ const reducer = (state, action) => {
             return {
                 ...state,
                 allMessages: action.payload
+            }
+        case "CHANGE_DATACONTENT_MESSAGES":
+            return {
+                ...state,
+                content: action.payload
             }
     
         default:
@@ -80,12 +86,12 @@ const MessageProvider = ({ children }) => {
         try {
             const response = await axios.put(`${apiUrl}/api/message/user-message/${data}`);
 
-            if(response.data.success) {
-                dispatch({
-                    type: "SEARCH_PEOPLE_MESSAGE",
-                    payload: response.data
-                });
-            }
+            // if(response.data.success) {
+            //     dispatch({
+            //         type: "SEARCH_PEOPLE_MESSAGE",
+            //         payload: response.data
+            //     });
+            // }
 
             return response.data;
         } catch (error) {
@@ -118,10 +124,16 @@ const MessageProvider = ({ children }) => {
     };
 
     const changeAllMessages = async (data) => {
-        // console.log();
         dispatch({
             type: "CHANGE_ALL_MESSAGES",
-            payload: [...state.allMessages, data]
+            payload: data
+        })
+    }
+
+    const changeDataContentMessages = async (data) => {
+        dispatch({
+            type: "CHANGE_DATACONTENT_MESSAGES",
+            payload: data
         })
     }
 
@@ -130,7 +142,8 @@ const MessageProvider = ({ children }) => {
         getAllMsg,
         userMessage,
         sendMessage,
-        changeAllMessages
+        changeAllMessages,
+        changeDataContentMessages,
     };
     return (
         <MessageContext.Provider value={dataMessageContext}>

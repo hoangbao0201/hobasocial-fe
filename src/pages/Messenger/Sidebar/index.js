@@ -24,25 +24,25 @@ import { MessageContext } from "~/context/message";
 
 const cx = classNames.bind(styles);
 
-const ItemMessage = ({ user, data, active, action }) => {
+const ItemMessage = ({ user, data, sosanh, active, setDataContentMessage }) => {
     // Delete post
     const eventDeleteMessage = async () => {
         if (window.confirm("Bạn có thật sự muốn xóa?")) {
-            // const dataServer = await deletePost(post._id);
-            // if (dataServer.success) {
-            // }
         }
     };
+
+    // console.log("data: ", data?._id)
+    // console.log("active: ", sosanh?._id)
 
     return (
         <div
             className={cx(
                 "item-message",
-                `${active && "active"}`,
+                `${active}`,
                 "item-msg-grid"
             )}
         >
-            <div className={cx("item__grid-image")} onClick={action}>
+            <div className={cx("item__grid-image")} onClick={setDataContentMessage}>
                 {data.members.map((people) => {
                     if (people._id === user._id) {
                         return;
@@ -60,7 +60,7 @@ const ItemMessage = ({ user, data, active, action }) => {
                     );
                 })}
             </div>
-            <div className={cx("item__grid-content")} onClick={action}>
+            <div className={cx("item__grid-content")} onClick={setDataContentMessage}>
                 <div className={cx("item__content-title")}>
                     {
                         data.members.map((people) => {
@@ -136,11 +136,12 @@ const ItemMessage = ({ user, data, active, action }) => {
 function Sidebar({
     user,
     active,
-    action,
+    setDataContentMessage,
     msgLoading,
     allMessages,
     loadingSearchPeople,
-    setLloadingSearchPeople,
+    setLoadingSearchPeople,
+    eventGetAllMessage,
 }) {
     // usecontext
     const { searchUser } = useContext(AuthContext);
@@ -194,17 +195,18 @@ function Sidebar({
 
     // Active item message
     const eventActiveItemMessage = async (data) => {
+        // console.log(data)
         if (data.content) {
-            action(data);
+            setDataContentMessage(data);
         } else {
-            setLloadingSearchPeople(true);
+            setLoadingSearchPeople(true);
             const dataServerContentMsg = await userMessage(data._id);
-            setLloadingSearchPeople(false);
+            setLoadingSearchPeople(false);
 
-            if (dataServerContentMsg.messages[0]) {
-                action(dataServerContentMsg.messages[0]);
+            if (dataServerContentMsg.messages.length > 0) {
+                setDataContentMessage(dataServerContentMsg.messages);
             } else {
-                action({
+                setDataContentMessage({
                     messagesId: null,
                     content: [],
                     members: [data],
@@ -218,6 +220,7 @@ function Sidebar({
     const eventCloseSuggestSearch = () => {
         setFocusInputSearch(false);
         setValueInputSearch("");
+        eventGetAllMessage();
     };
 
     let contentSidebar;
@@ -239,8 +242,9 @@ function Sidebar({
                                 user={user}
                                 key={item._id}
                                 data={item}
-                                active={item === active ? "active" : ""}
-                                action={() => eventActiveItemMessage(item)}
+                                sosanh={active}
+                                active={item?._id === active?._id ? "active" : ""}
+                                setDataContentMessage={() => eventActiveItemMessage(item)}
                             />
                         );
                     })}
@@ -251,6 +255,7 @@ function Sidebar({
         contentSidebar = (
             <>
                 <SuggestSearchUserMsg
+                    user={user}
                     data={resultListUserSearch}
                     isActive={active}
                     eventActiveItemMessage={eventActiveItemMessage}

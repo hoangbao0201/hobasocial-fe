@@ -83,6 +83,8 @@ function Messenger() {
         }
     }, [user]);
 
+    console.log(dataContentMessage)
+
     useEffect(() => {
         let change = false;
         if (allMessages) {
@@ -103,9 +105,13 @@ function Messenger() {
                     //     }
                     // })
 
-                    if(!!dataContentMessage) {
+                    if(dataContentMessage?._id === newMessage?._id) {
                         setDataContentMessage(newMessage);
                     }
+
+                    // console.log(dataContentMessage?.id === newMessage._id)
+                    // console.log("newMessage", newMessage._id);
+                    // console.log("dataContentMessage", newMessage._id);
 
                     // Customize allMessages
                     let newData = allMessages.filter((d) => {

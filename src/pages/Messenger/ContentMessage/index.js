@@ -147,8 +147,6 @@ function ContentMessage({
         scrollRef.current?.scrollIntoView();
     }, [dataContentMessage, allMessages]);
 
-    console.log(dataContentMessage)
-
     return (
         <div className={cx("content-message")}>
             <div className={cx("content-header")}>

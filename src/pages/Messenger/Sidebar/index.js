@@ -204,8 +204,9 @@ function Sidebar({
             setLoadingSearchPeople(false);
 
             if (dataServerContentMsg.messages.length > 0) {
-                setDataContentMessage(dataServerContentMsg.messages);
+                setDataContentMessage(...dataServerContentMsg.messages);
             } else {
+                console.log(123)
                 setDataContentMessage({
                     messagesId: null,
                     content: [],

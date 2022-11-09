@@ -10,7 +10,7 @@ function Footer() {
                 <img className={cx("image-logo")} src='/images/logo.png' alt='logo'/>
             </div>
             <div className={cx("grid-list-item")}>
-                Html, Css, Js, React, NodeJS, Express, MongoDB, Cloudinary
+                {/* Html, Css, Js, React, NodeJS, Express, MongoDB, Cloudinary */}
             </div>
         </div>
     </div>;

@@ -29,8 +29,6 @@ function FormUpdatePost({
     const [urlImage, setUrlImage] = useState(currentPost.image.url);
     const [textValue, setTextValue] = useState(currentPost.content);
 
-    console.log("currentPost: ", currentPost);
-
     const eventOnchangeImagePost = async (e) => {
         setLoadingImage(true);
         // ---

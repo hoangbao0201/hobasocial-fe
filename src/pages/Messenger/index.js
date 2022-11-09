@@ -83,8 +83,6 @@ function Messenger() {
         }
     }, [user]);
 
-    console.log(dataContentMessage)
-
     useEffect(() => {
         let change = false;
         if (allMessages) {
@@ -109,19 +107,16 @@ function Messenger() {
                         setDataContentMessage(newMessage);
                     }
 
-                    // console.log(dataContentMessage?.id === newMessage._id)
-                    // console.log("newMessage", newMessage._id);
-                    // console.log("dataContentMessage", newMessage._id);
-
                     // Customize allMessages
                     let newData = allMessages.filter((d) => {
                         if (d._id === newMessage._id) {
                             d.content = newMessage.content;
                             d.updatedAt = newMessage.updatedAt;
                             change = true;
-                        }
+                        }   
                         return d;
                     });
+                    console.log(change)
                     changeAllMessages(change ? newData : [newMessage, ...allMessages]);
 
                     // if(newMessage.content[newMessage.content.length - 1].sendBy !== user._id) {

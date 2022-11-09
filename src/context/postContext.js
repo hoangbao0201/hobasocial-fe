@@ -125,9 +125,26 @@ const PostContextProvider = ({ children }) => {
         }
     }
 
-    const addComment = async (data) => {
+    const addComment = async (data, id) => {
         try {
-            const response = await axios.post(`${apiUrl}/api/post/add-comment`, data);
+            const response = await axios.put(`${apiUrl}/api/post/add-comment/${id}`, data);
+
+            return response.data;
+        } catch (error) {
+            if (error.response.data) {
+                return error.response.data;
+            } else {
+                return {
+                    success: false,
+                    msg: error.msg,
+                };
+            }
+        }
+    }
+
+    const deleteComment = async (data, id) => {
+        try {
+            const response = await axios.put(`${apiUrl}/api/post/delete-comment/${id}`, data);
 
             return response.data;
         } catch (error) {
@@ -153,6 +170,7 @@ const PostContextProvider = ({ children }) => {
         unlikePost,
 
         addComment,
+        deleteComment,
         
         uploadSingleImage
     };

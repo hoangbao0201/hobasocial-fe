@@ -26,7 +26,7 @@ function CardPost({ user, post, likePost, unlikePost, deletePost }) {
     const [loadingFormPost, setLoadingFormPost] = useState(false);
 
     const [isModalFormUploadPost, setIsModalFormUploadPost] = useState(false);
-    const [isFormComment, setIsFormComment] = useState(false);
+    const [isFormComment, setIsFormComment] = useState(true);
     const [isLike, setIsLike] = useState(post.likes.includes(user._id));
     const [isDelete, setIsDelete] = useState(false);
     const [countLikes, setCountLikes] = useState(post.likes.length);
@@ -72,7 +72,10 @@ function CardPost({ user, post, likePost, unlikePost, deletePost }) {
             if (dataServer.success) {
                 setLoadingFormPost(false);
                 setIsDelete(true);
+
+                return
             }
+            setLoadingFormPost(false);
         }
     };
 
@@ -211,7 +214,7 @@ function CardPost({ user, post, likePost, unlikePost, deletePost }) {
                         Bình luận
                     </span>
                 </div>
-                {isFormComment && <FormCommentPost user={user} />}
+                {isFormComment && <FormCommentPost user={user} post={post}/>}
             </div>
         </div>
     );

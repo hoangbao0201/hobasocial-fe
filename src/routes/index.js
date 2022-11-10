@@ -4,6 +4,7 @@ import Messenger from "~/pages/Messenger";
 import Register from "~/pages/Register";
 import UpdateUser from "~/pages/UpdateUser";
 import CheckUser from "~/utils/checkUser";
+import Profile from "~/pages/Profile";
 
 
 const publicRouter = [
@@ -14,6 +15,7 @@ const publicRouter = [
     { path: "/", component: Posts, layout: CheckUser},
     { path: "/messenger", component: Messenger, layout: CheckUser},
     { path: "/update-profile", component: UpdateUser, layout: CheckUser},
+    { path: "/:id", component: Profile, layout: CheckUser},
     
 ]
 

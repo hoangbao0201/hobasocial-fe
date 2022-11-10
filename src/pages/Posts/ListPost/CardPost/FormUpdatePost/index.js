@@ -105,8 +105,6 @@ function FormUpdatePost({
         // console.log(dataServerInfo.post)
         setCurrentPost(dataServerInfo.post);
 
-        console.log("dataServerInfo.post ", dataServerInfo.post)
-
         setLoadingFormPost(false);
     };
 

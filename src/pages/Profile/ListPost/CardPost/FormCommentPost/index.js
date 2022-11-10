@@ -157,7 +157,6 @@ function FormCommentPost({ user, post }) {
             { text: valueComment },
             post._id
         );
-        console.log(dataServerAddComment)
 
         dispatch({
             type: "CHANGE_COMMENT_ID",

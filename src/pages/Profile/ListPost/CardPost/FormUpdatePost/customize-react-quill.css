@@ -1,0 +1,28 @@
+
+/* remove border */
+.ql-container.ql-snow {
+    border: 0px !important;
+}
+
+/* font size default */
+.ql-editor {
+    color: #050505 !important;
+    font-size: 18px !important;
+}
+
+/* font style placehoder */
+.ql-editor.ql-blank::before {
+    font-size: 18px;
+    font-style: initial !important;
+}
+
+/* Left placehoder */
+.ql-editor.ql-blank::before {
+    left: 18px !important;
+}
+
+/* height form default */
+.ql-editor {
+    /* min-height: 200px !important; */
+    padding: 5px 18px !important;
+}

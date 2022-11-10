@@ -3,11 +3,11 @@ import styles from "./Avatar.module.scss";
 
 const cx = classNames.bind(styles);
 
-function Avatar({ image }) {
+function Avatar({ image, size }) {
     return (
         <div className={cx("avatar")}>
             <img
-                className={cx("avatar-image")}
+                className={cx("avatar-image", `size-${size}`)}
                 src={image || "/images/avatar-default.png"}
             />
         </div>

@@ -201,6 +201,24 @@ function AuthContextProvider({ children }) {
         });
     };
 
+    const connectUser = async (data) => {
+        try {
+            const response = await axios.get(`${apiUrl}/api/auth/${data}`);
+
+            return response.data;
+        } catch (error) {
+            if(error.response.data) {
+                return error.response.data;
+            }
+            else {
+                return {
+                    success: false,
+                    msg: error.msg
+                };
+            }
+        }
+    }
+
     const dataAuthContext = {
         state,
         autoFetch,
@@ -212,6 +230,7 @@ function AuthContextProvider({ children }) {
         searchUser,
         setOneState,
         uploadAvatar,
+        connectUser,
     };
     return (
         <AuthContext.Provider value={dataAuthContext}>

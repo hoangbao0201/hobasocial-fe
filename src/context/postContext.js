@@ -23,6 +23,23 @@ const PostContextProvider = ({ children }) => {
         }
     };
 
+    const getUserPost = async (page, perpage, id) => {
+        try {
+            const response = await axios.get(`${apiUrl}/api/post/user-post?page=${page}&perpage=${perpage}&id=${id}`);
+
+            return response.data;
+        } catch (error) {
+            if (error.response.data) {
+                return error.response.data;
+            } else {
+                return {
+                    success: false,
+                    msg: error.msg,
+                };
+            }
+        }
+    };
+
     const createPost = async (data) => {
         try {
             const response = await axios.post(`${apiUrl}/api/post/create-post`, data);
@@ -161,6 +178,7 @@ const PostContextProvider = ({ children }) => {
 
     const dataPostContext = {
         getMutiplePosts,
+        getUserPost,
 
         createPost,
         editPost,

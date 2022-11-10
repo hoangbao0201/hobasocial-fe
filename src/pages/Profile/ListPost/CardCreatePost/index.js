@@ -91,7 +91,7 @@ const FormCreatePostInModal = ({
 
     const inputRef = useRef();
     const imageRef = useRef();
-    const [loadingButton, setLoadingButton] = useState(false);
+    // const [loadingButton, setLoadingButton] = useState(false);
     const [loadingImage, setLoadingImage] = useState(false);
     const [dataImage, setDataImage] = useState(null);
     const [urlImage, setUrlImage] = useState(null);
@@ -124,7 +124,7 @@ const FormCreatePostInModal = ({
         }
 
         // setLoadingButton(true);
-        setLoadingButton(true);
+        actionQuit(false);
         setIsLoadingCreatePost(true);
 
         // Request upload image post
@@ -152,11 +152,13 @@ const FormCreatePostInModal = ({
             },
         });
 
-        setLoadingButton(false);
-        actionQuit(false);
+        // setLoadingButton(false);
+        // actionQuit(false);
 
+        // setListPostsNew(listPostsNew.unshift(dataServerInfo.post));
         setPosts([dataServerInfo.post, ...posts])
 
+        // console.log(dataServerInfo.post)
         setIsLoadingCreatePost(false);
     };
 

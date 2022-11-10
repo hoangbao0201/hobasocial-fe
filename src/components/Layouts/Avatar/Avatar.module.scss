@@ -1,5 +1,7 @@
 
-
+.avatar {
+    -webkit-user-select: none;
+}
 
 .avatar-image {
     width: 40px;
@@ -8,4 +10,9 @@
     object-fit: cover;
     border-radius: 50%;
     display: block;
+}
+
+.avatar-image.size-big {
+    width: 200px;
+    height: 200px;
 }

@@ -1,101 +1,33 @@
 import classNames from "classnames/bind";
-import styles from "./CardCreatePost.module.scss";
+import styles from "./FormUpdatePost.module.scss";
 
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 
-import Modal from "react-modal";
 import Avatar from "~/components/Layouts/Avatar";
 import { iconClose, iconFileImage } from "~/.public/icon";
 import Spinner from "~/components/Layouts/Spinner";
-import { useContext, useEffect, useRef, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import { PostContext } from "~/context/postContext";
 import "./customize-react-quill.css";
 
 const cx = classNames.bind(styles);
 
-function CardCreatePost({ user, posts, setPosts, setIsLoadingCreatePost, setListPostsNew, listPostsNew }) {
-    const [isModal, setIsModal] = useState(false);
-
-    const eventShowModal = () => {
-        setIsModal(true);
-        document.body.style.overflow = "hidden";
-    };
-
-    const eventHiddenModal = async () => {
-        setIsModal(false);
-        document.body.style.overflow = "";
-    };
-
-    return (
-        <>
-            <div className={cx("card-create-post")}>
-                <Modal
-                    isOpen={isModal}
-                    onRequestClose={eventHiddenModal}
-                    ariaHideApp={false}
-                    style={{
-                        content: {
-                            margin: "auto",
-                            padding: "0px",
-                            display: "table",
-                            inset: "0px",
-                            width: "100%",
-                            maxWidth: "500px",
-                        },
-                        overlay: {
-                            zIndex: "101",
-                            backgroundColor: "rgba(0, 0, 0, 0.2)",
-                            display: "flex",
-                            justifyContent: "center",
-                            alignItems: "center",
-                        },
-                    }}
-                >
-                    <FormCreatePostInModal
-                        user={user}
-                        posts={posts}
-                        setPosts={setPosts}
-                        actionQuit={eventHiddenModal}
-                        setIsLoadingCreatePost={setIsLoadingCreatePost}
-                        setListPostsNew={setListPostsNew}
-                        listPostsNew={listPostsNew}
-                    />
-                </Modal>
-                <div className={cx("card-create-post-content")}>
-                    <Avatar image={user.avatar.url} />
-                    <button
-                        className={cx("button-show-modal")}
-                        onClick={eventShowModal}
-                    >
-                        {user.name || "Người dùng HoBa"} ơi, bạn đang nghĩ gì
-                        thế
-                    </button>
-                </div>
-            </div>
-        </>
-    );
-}
-export default CardCreatePost;
-
-const FormCreatePostInModal = ({
+function FormUpdatePost({
     user,
-    posts,
-    setPosts,
+    currentPost,
+    setCurrentPost,
     actionQuit,
-    setIsLoadingCreatePost,
-    setListPostsNew,
-    listPostsNew,
-}) => {
-    const { createPost, uploadSingleImage } = useContext(PostContext);
+    setLoadingFormPost,
+}) {
+    const { editPost, uploadSingleImage } = useContext(PostContext);
 
-    const inputRef = useRef();
     const imageRef = useRef();
-    const [loadingButton, setLoadingButton] = useState(false);
-    const [loadingImage, setLoadingImage] = useState(false);
     const [dataImage, setDataImage] = useState(null);
-    const [urlImage, setUrlImage] = useState(null);
-    const [textValue, setTextValue] = useState("");
+    const [loadingImage, setLoadingImage] = useState(false);
+    const [loadingButton, setLoadingButton] = useState(false);
+    const [urlImage, setUrlImage] = useState(currentPost.image.url);
+    const [textValue, setTextValue] = useState(currentPost.content);
 
     const eventOnchangeImagePost = async (e) => {
         setLoadingImage(true);
@@ -114,65 +46,75 @@ const FormCreatePostInModal = ({
         setLoadingImage(false);
     };
 
-    const eventSubmitCreatePost = async (e) => {
+    const eventCloseModal = () => {
+        actionQuit(false);
+    };
+
+    const eventSubmitUpdatePost = async (e) => {
         e.preventDefault();
 
         // Check info post
-        if (textValue === "" && !dataImage) {
+        if (textValue.length===0 && !urlImage) {
             console.log("bạn chưa điền đầy đủ thông tin");
             return;
         }
 
-        // setLoadingButton(true);
         setLoadingButton(true);
-        setIsLoadingCreatePost(true);
 
         // Request upload image post
         let image = {
-            urlImage: null,
-            idImage: null,
+            url: currentPost.image.url,
+            public_id: currentPost.image.public_id,
         };
-        if (dataImage) {
+        if (!!dataImage && urlImage != image.url) {
             const formData = new FormData();
             formData.append("file", dataImage);
             const dataServerImage = await uploadSingleImage(formData);
 
             image = {
-                urlImage: dataServerImage.urlImage || null,
-                idImage: dataServerImage.idImage || null,
+                url: dataServerImage.urlImage,
+                public_id: dataServerImage.idImage,
             };
+        }
+        else {
+            if(urlImage === null) {
+                image = {
+                    url: null,
+                    public_id: null
+                }
+            }
         }
 
         // Request upload info and image post
-        const dataServerInfo = await createPost({
-            content: textValue,
-            image: {
-                url: image.urlImage,
-                public_id: image.idImage,
+        const postId = currentPost._id;
+        const dataServerInfo = await editPost(
+            {
+                content: textValue,
+                image: {
+                    url: image.url,
+                    public_id: image.public_id,
+                },
             },
-        });
+            postId
+        );
 
         setLoadingButton(false);
+        setLoadingFormPost(true);
         actionQuit(false);
 
-        setPosts([dataServerInfo.post, ...posts])
+        // console.log(dataServerInfo.post)
+        setCurrentPost(dataServerInfo.post);
 
-        setIsLoadingCreatePost(false);
+        console.log("dataServerInfo.post ", dataServerInfo.post)
+
+        setLoadingFormPost(false);
     };
-
-    const eventCloseModal = () => {
-        actionQuit(false);
-    };
-
-    useEffect(() => {
-        inputRef.current.focus();
-    }, []);
 
     return (
         <div className={cx("container")}>
             <div className={cx("content")}>
                 <div className={cx("grid-header")}>
-                    <span className={cx("title")}>Tạo bài viết</span>
+                    <span className={cx("title")}>Chỉnh sửa bài viết</span>
                     <i className={cx("icon-close")} onClick={eventCloseModal}>
                         {iconClose}
                     </i>
@@ -190,7 +132,6 @@ const FormCreatePostInModal = ({
                     )}
                 >
                     <ReactQuill
-                        ref={inputRef}
                         theme="snow"
                         value={textValue}
                         onChange={setTextValue}
@@ -249,12 +190,12 @@ const FormCreatePostInModal = ({
                                 "dev-button-auto",
                                 "button-create-post"
                             )}
-                            onClick={eventSubmitCreatePost}
-                            // disabled={loadingButton}
+                            onClick={eventSubmitUpdatePost}
+                            disabled={loadingButton}
                         >
-                            {/* {loadingButton && <Spinner size="sm" />} */}
+                            {loadingButton && <Spinner size="sm" />}
                             <p className={cx("title-button-upload")}>
-                                Đăng bài
+                                Cập nhật
                             </p>
                         </button>
                     </div>
@@ -262,4 +203,6 @@ const FormCreatePostInModal = ({
             </div>
         </div>
     );
-};
+}
+
+export default FormUpdatePost;

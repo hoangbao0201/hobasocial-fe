@@ -17,16 +17,16 @@
 -   Follow user, unfollow user.
 -   Distinguish admin and normal user (admin has blue tick).
 -   Profile
-(https://res.cloudinary.com/djrbd6ftt/image/upload/v1668091780/images-web/profile_dv52fx.png)
+![Dark mode](https://res.cloudinary.com/djrbd6ftt/image/upload/v1668091780/images-web/profile_dv52fx.png)
 -   Post (in Dashboard page and profile page) :
     -   Create new post (with text and image).
-    (https://res.cloudinary.com/djrbd6ftt/image/upload/v1668091782/images-web/create-post_ym02bm.png)
+![Dark mode](https://res.cloudinary.com/djrbd6ftt/image/upload/v1668091782/images-web/create-post_ym02bm.png)
     -   Update post.
     -   Delete post.
     -   Like and unlike post.
-    (https://res.cloudinary.com/djrbd6ftt/image/upload/v1668091779/images-web/post_cv9ccu.png)
+![Dark mode](https://res.cloudinary.com/djrbd6ftt/image/upload/v1668091779/images-web/post_cv9ccu.png)
     -   Add comments (with text).
-    (https://res.cloudinary.com/djrbd6ftt/image/upload/v1668091780/images-web/new-post_fp0g0f.png)
+![Dark mode](https://res.cloudinary.com/djrbd6ftt/image/upload/v1668091780/images-web/new-post_fp0g0f.png)
     -   Delete and update comment.
 -   Message:
     -   Add new user

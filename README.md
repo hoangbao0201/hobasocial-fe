@@ -30,8 +30,10 @@
     -   Delete and update comment.
 -   Message:
     -   Add new user
+![Dark mode](https://res.cloudinary.com/djrbd6ftt/image/upload/v1668091778/images-web/messenger_kpdr6g.png)
     -   Notification when receiving new messages from other users
     -   Search user in chat
+![Dark mode](https://res.cloudinary.com/djrbd6ftt/image/upload/v1668091780/images-web/search-user_tfvxrc.png)
 -   Admin-page:
     -   Statistics of registered people and number of posts.
     -   Table showing user and post details.

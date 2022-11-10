@@ -250,9 +250,9 @@ const FormCreatePostInModal = ({
                                 "button-create-post"
                             )}
                             onClick={eventSubmitCreatePost}
-                            // disabled={loadingButton}
+                            disabled={loadingButton}
                         >
-                            {/* {loadingButton && <Spinner size="sm" />} */}
+                            {loadingButton && <Spinner size="sm" />}
                             <p className={cx("title-button-upload")}>
                                 Đăng bài
                             </p>

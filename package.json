@@ -1,5 +1,6 @@
 {
   "name": "client",
+  "homepage": "https://hoangbao.click/",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

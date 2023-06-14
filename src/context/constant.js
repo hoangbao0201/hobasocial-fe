@@ -8,7 +8,7 @@
 
 export const apiUrl =
     process.env.NODE_ENV == "production"
-    ? process.env.REACT_APP_URLAPI
+    ? "https://hobasocial-be.onrender.com"
     : "http://localhost:5000"
 
 export const LOCAL_STORAGE_TOKEN_NAME = "TokenUser";

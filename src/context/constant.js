@@ -4,6 +4,6 @@
 export const apiUrl =
     process.env.NODE_ENV !== "production"
         ? "http://localhost:5000"
-        : "https://hoangbao-server-hobachat-production.up.railway.app";
+        : process.env.URLAPI;
 
 export const LOCAL_STORAGE_TOKEN_NAME = "TokenUser";
